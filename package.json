@@ -1,0 +1,34 @@
+{
+  "logseq": {
+    "id": "logseq-powertags-plugin",
+    "title": "logseq-powertags-plugin",
+    "icon": "./icon.svg"
+  },
+  "name": "logseq-powertags-plugin",
+  "version": "0.0.1alpha",
+  "description": "",
+  "main": "dist/index.html",
+  "targets": {
+    "main": false
+  },
+  "scripts": {
+    "build": "rm -R dist && echo 'dist folder removed'; postcss src/tailwind.css -o src/App.css && parcel build --no-source-maps src/index.html --public-url ./"
+  },
+  "keywords": [],
+  "author": "hkgnp",
+  "license": "MIT",
+  "dependencies": {
+    "@logseq/libs": "^0.0.10",
+    "@tailwindcss/forms": "^0.5.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^3.2.4"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.25",
+    "@types/react-dom": "^18.0.9",
+    "parcel": "^2.8.0",
+    "postcss": "^8.4.19",
+    "postcss-cli": "^10.0.0"
+  }
+}
