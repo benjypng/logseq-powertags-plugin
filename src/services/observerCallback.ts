@@ -1,4 +1,4 @@
-import findTag from "./utils/findTag";
+import findTag from "../utils/findTag";
 
 export default async function observerCallback(mutationsList: any[]) {
   for (const mutation of mutationsList) {
