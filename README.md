@@ -26,7 +26,9 @@ Designate selected tags as power tags, and see them auto-create properties are y
    - Apply the properties of a power tag to blocks created before the power tag
      - This will apply to **past** blocks created before the power tag
 
-> Important Note: Noted that the last 3 functions are irreversible so please ensure that your graph is backed up and that you are sure before applying them.
+> 1st Important Note: Note that the last 3 functions are irreversible so please ensure that your graph is backed up and that you are sure before applying them.
+
+> 2nd Important Note: Power tags are stored in the plugin settings. If the plugin settings file (found in `.logseq`) is deleted, you will need to manually create your power tags again.
 
 # Installation
 
