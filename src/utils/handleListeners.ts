@@ -11,13 +11,6 @@ export default function handleListeners() {
     false
   );
 
-  // Click
-  document.addEventListener("click", (e) => {
-    if (!(e.target as HTMLElement).closest("body")) {
-      logseq.hideMainUI({ restoreEditingCursor: true });
-    }
-  });
-
   // Auto focus
   document.addEventListener("keydown", (e: any) => {
     if (e.key !== "Escape") {

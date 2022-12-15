@@ -2,6 +2,7 @@ import "@logseq/libs";
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
+import CreateTag from "./components/CreateTag";
 import observerCallback from "./observerCallback";
 import findTag from "./utils/findTag";
 import handleListeners from "./utils/handleListeners";
@@ -11,25 +12,43 @@ function main() {
 
   handleListeners();
 
-  if (!logseq.settings!.allTags) {
-    logseq.updateSettings({
-      savedTags: {},
-    });
-  }
-
-  logseq.Editor.registerSlashCommand("Manage Power Tags", async function () {
-    const content: string = await logseq.Editor.getEditingBlockContent();
-    const tag: string = findTag(content) as string;
-    const checkExistingTag = logseq.settings!.savedTags[tag];
-
-    logseq.showMainUI();
+  // CREATE TAG
+  logseq.Editor.registerSlashCommand("Create power tag", async function (e) {
+    const blk = await logseq.Editor.getBlock(e.uuid);
+    const tag = findTag(blk!.content);
 
     ReactDOM.render(
       <React.StrictMode>
-        <App tag={tag} checkExistingTag={checkExistingTag} />
+        <CreateTag tag={tag} />;
       </React.StrictMode>,
       document.getElementById("app")
     );
+    logseq.showMainUI();
+  });
+
+  // MANAGE TAGS
+  logseq.provideModel({
+    manageTag() {
+      const mappedSavedTags = Object.entries(logseq.settings!.savedTags).map(
+        (i) => ({
+          tag: i[0],
+          properties: i[1],
+        })
+      );
+
+      ReactDOM.render(
+        <React.StrictMode>
+          <App savedTags={mappedSavedTags} />
+        </React.StrictMode>,
+        document.getElementById("app")
+      );
+      logseq.showMainUI();
+    },
+  });
+
+  logseq.App.registerUIItem("toolbar", {
+    key: "logseq-clock-plugin",
+    template: `<a data-on-click="manageTag" class="button"><i class="ti ti-hash"></i></a>`,
   });
 
   //@ts-expect-error
