@@ -655,6 +655,9 @@ select {
 .w-1\/4 {
   width: 25%;
 }
+.w-2\/3 {
+  width: 66.666667%;
+}
 .flex-row {
   flex-direction: row;
 }

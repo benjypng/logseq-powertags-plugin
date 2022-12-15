@@ -5,7 +5,9 @@ export default function SavedTags(props: {
   tag: string;
   properties: string[];
 }) {
-  const [warning, setWarning] = useState(false);
+  const [warning, setWarning] = useState<boolean>(false);
+  const [propertyInput, setPropertyInput] = useState<boolean>(false);
+  const [property, setProperty] = useState<string>("");
 
   function toggle() {
     warning ? setWarning(false) : setWarning(true);
@@ -13,6 +15,7 @@ export default function SavedTags(props: {
 
   function cancel() {
     setWarning(false);
+    setPropertyInput(false);
   }
 
   function deleteTag() {
@@ -78,9 +81,52 @@ export default function SavedTags(props: {
     logseq.hideMainUI();
   }
 
+  function addProperty() {
+    setPropertyInput(true);
+  }
+
+  async function saveProperty() {
+    let properties = logseq.settings!.savedTags[props.tag];
+    properties.push(property);
+
+    logseq.updateSettings({
+      savedTags: {
+        [props.tag]: "why why why",
+      },
+    });
+
+    logseq.updateSettings({
+      savedTags: {
+        [props.tag]: properties,
+      },
+    });
+
+    let results = await logseq.DB.datascriptQuery(`
+				[:find (pull ?b [*])
+    		 :where
+         [?b :block/path-refs [:block/name "${props.tag.substring(1)}"]]]
+`);
+
+    results = results
+      .map((r: BlockEntity[]) => r[0])
+      .filter((r: BlockEntity) => r.content !== props.tag)
+      .filter((r: BlockEntity) => Object.keys(r.properties!).length > 0)
+      .map(async (r: BlockEntity) => {
+        await logseq.Editor.upsertBlockProperty(r.uuid, property, "...");
+      });
+
+    setPropertyInput(false);
+    setProperty("");
+    logseq.hideMainUI();
+  }
+
+  function handleForm(e: React.ChangeEvent<HTMLInputElement>) {
+    setProperty(([e.target.name] = e.target.value));
+  }
+
   return (
     <div className="bg-purple-200 rounded-lg p-3 mb-2 flex flex-row justify-between">
-      {!warning && (
+      {!warning && !propertyInput && (
         <React.Fragment>
           <div className="w-3/4 align-middle">
             <p className="font-bold mb-1">{props.tag}</p>
@@ -91,7 +137,10 @@ export default function SavedTags(props: {
                   x
                 </button>
               </span>
-            ))}
+            ))}{" "}
+            <button className="font-bold" onClick={addProperty}>
+              +
+            </button>
           </div>
 
           <div className="flex flex-col align-middle w-1/4 gap-2">
@@ -125,6 +174,38 @@ export default function SavedTags(props: {
               className="text-white bg-gray-800 p-1 text-xs rounded-md"
             >
               Yes
+            </button>
+            <button
+              onClick={cancel}
+              className="text-white bg-red-500 p-1 text-xs rounded-md"
+            >
+              Cancel
+            </button>
+          </div>
+        </React.Fragment>
+      )}
+
+      {propertyInput && (
+        <React.Fragment>
+          <div className="w-3/4 align-middle">
+            <p className="font-bold mb-1">
+              <input
+                id="text-field"
+                type="text"
+                name="property"
+                value={property}
+                onChange={handleForm}
+                className="px-2 py-1 rounded-xl mb-3 w-2/3 h-6"
+              />
+            </p>
+          </div>
+
+          <div className="flex flex-col align-middle w-1/4 gap-2">
+            <button
+              onClick={saveProperty}
+              className="text-white bg-gray-800 p-1 text-xs rounded-md"
+            >
+              Add Property
             </button>
             <button
               onClick={cancel}
