@@ -4,6 +4,8 @@
 
 Designate selected tags as power tags, and see them auto-create properties are you use them!
 
+![](screenshots/demo.gif)
+
 # Usage
 
 ## Creating Power Tags
