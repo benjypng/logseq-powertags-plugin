@@ -22,7 +22,7 @@ function main() {
   // CREATE TAG
   logseq.Editor.registerSlashCommand("Create power tag", async function () {
     const content = await logseq.Editor.getEditingBlockContent();
-    let tag = findTag(content);
+    const tag = findTag(content);
 
     ReactDOM.render(
       <React.StrictMode>
@@ -31,8 +31,6 @@ function main() {
       document.getElementById("app")
     );
     logseq.showMainUI();
-
-    tag = "";
   });
 
   // MANAGE TAGS
