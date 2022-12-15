@@ -47,7 +47,6 @@ export default function CreateTag(props: { tag: string | number }) {
 
       setPropertyList([]);
       logseq.hideMainUI();
-      console.log(logseq.settings!.savedTags);
     }
   }
   return (

@@ -12,6 +12,13 @@ function main() {
 
   handleListeners();
 
+  // Create setup
+  if (!logseq.settings!.savedTags) {
+    logseq.updateSettings({
+      savedTags: {},
+    });
+  }
+
   // CREATE TAG
   logseq.Editor.registerSlashCommand("Create power tag", async function (e) {
     const blk = await logseq.Editor.getBlock(e.uuid);

@@ -634,17 +634,14 @@ select {
 .mb-1 {
   margin-bottom: 0.25rem;
 }
-.ml-2 {
-  margin-left: 0.5rem;
+.block {
+  display: block;
 }
 .flex {
   display: flex;
 }
 .h-6 {
   height: 1.5rem;
-}
-.h-10 {
-  height: 2.5rem;
 }
 .w-1\/3 {
   width: 33.333333%;
@@ -658,17 +655,20 @@ select {
 .w-1\/4 {
   width: 25%;
 }
-.w-12 {
-  width: 3rem;
-}
 .flex-row {
   flex-direction: row;
+}
+.flex-col {
+  flex-direction: column;
 }
 .justify-end {
   justify-content: flex-end;
 }
 .justify-between {
   justify-content: space-between;
+}
+.gap-2 {
+  gap: 0.5rem;
 }
 .rounded-lg {
   border-radius: 0.5rem;
@@ -720,6 +720,9 @@ select {
 .p-3 {
   padding: 0.75rem;
 }
+.p-1 {
+  padding: 0.25rem;
+}
 .px-3 {
   padding-left: 0.75rem;
   padding-right: 0.75rem;
@@ -735,10 +738,6 @@ select {
 .px-1 {
   padding-left: 0.25rem;
   padding-right: 0.25rem;
-}
-.py-0 {
-  padding-top: 0px;
-  padding-bottom: 0px;
 }
 .align-middle {
   vertical-align: middle;
@@ -765,6 +764,9 @@ select {
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+.filter {
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 .hover\:bg-purple-600:hover {
   --tw-bg-opacity: 1;

@@ -12,16 +12,17 @@ export default async function observerCallback(mutationsList: any[]) {
         ?.getAttribute("blockid");
 
       const blk = await logseq.Editor.getBlock(uuid);
+      const tag = findTag(blk!.content);
 
       if (
-        findTag(blk!.content) !== -1 &&
-        findTag(blk!.content) !== blk!.content
+        tag !== -1 &&
+        tag !== blk!.content &&
+        logseq.settings!.savedTags[tag] &&
+        Object.keys(blk!.properties!).length === 0
       ) {
-        logseq.settings!.savedTags[findTag(blk!.content)].map(
-          async (t: string) => {
-            await logseq.Editor.upsertBlockProperty(uuid, t, "...");
-          }
-        );
+        logseq.settings!.savedTags[tag].map(async (t: string) => {
+          await logseq.Editor.upsertBlockProperty(uuid, t, "...");
+        });
       }
     }
   }
