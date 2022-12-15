@@ -1,5 +1,6 @@
 import { BlockEntity } from "@logseq/libs/dist/LSPlugin.user";
 import React, { useState } from "react";
+import dbQuery from "../utils/dbQuery";
 
 export default function SavedTags(props: {
   tag: string;
@@ -29,40 +30,24 @@ export default function SavedTags(props: {
   }
 
   async function applyAll() {
-    let results = await logseq.DB.datascriptQuery(`
-				[:find (pull ?b [*])
-    		 :where
-         [?b :block/path-refs [:block/name "${props.tag.substring(1)}"]]]
-`);
+    let results = await dbQuery(props.tag, true);
 
-    results = results
-      .map((r: BlockEntity[]) => r[0])
-      .filter((r: BlockEntity) => r.content !== props.tag)
-      .filter((r: BlockEntity) => Object.keys(r.properties!).length === 0)
-      .map((r: BlockEntity) => {
-        logseq.settings!.savedTags[props.tag].map(async (t: string) => {
-          await logseq.Editor.upsertBlockProperty(r.uuid, t, "...");
-        });
+    results = results.map((r: BlockEntity) => {
+      logseq.settings!.savedTags[props.tag].map(async (t: string) => {
+        await logseq.Editor.upsertBlockProperty(r.uuid, t, "...");
       });
+    });
 
     setWarning(false);
     logseq.hideMainUI();
   }
 
   async function removeProperty(e) {
-    let results = await logseq.DB.datascriptQuery(`
-				[:find (pull ?b [*])
-    		 :where
-         [?b :block/path-refs [:block/name "${props.tag.substring(1)}"]]]
-`);
+    let results = await dbQuery(props.tag, false);
 
-    results = results
-      .map((r: BlockEntity[]) => r[0])
-      .filter((r: BlockEntity) => r.content !== props.tag)
-      .filter((r: BlockEntity) => Object.keys(r.properties!).length > 0)
-      .map(async (r: BlockEntity) => {
-        await logseq.Editor.removeBlockProperty(r.uuid, e.target.id);
-      });
+    results = results.map(async (r: BlockEntity) => {
+      await logseq.Editor.removeBlockProperty(r.uuid, e.target.id);
+    });
 
     const properties = logseq.settings!.savedTags[props.tag];
     properties.splice(properties.indexOf(e.target.id), 1);
@@ -101,19 +86,11 @@ export default function SavedTags(props: {
       },
     });
 
-    let results = await logseq.DB.datascriptQuery(`
-				[:find (pull ?b [*])
-    		 :where
-         [?b :block/path-refs [:block/name "${props.tag.substring(1)}"]]]
-`);
+    let results = await dbQuery(props.tag, false);
 
-    results = results
-      .map((r: BlockEntity[]) => r[0])
-      .filter((r: BlockEntity) => r.content !== props.tag)
-      .filter((r: BlockEntity) => Object.keys(r.properties!).length > 0)
-      .map(async (r: BlockEntity) => {
-        await logseq.Editor.upsertBlockProperty(r.uuid, property, "...");
-      });
+    results = results.map(async (r: BlockEntity) => {
+      await logseq.Editor.upsertBlockProperty(r.uuid, property, "...");
+    });
 
     setPropertyInput(false);
     setProperty("");

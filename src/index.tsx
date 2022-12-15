@@ -3,7 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import CreateTag from "./components/CreateTag";
-import observerCallback from "./observerCallback";
+import observerCallback from "./services/observerCallback";
 import findTag from "./utils/findTag";
 import handleListeners from "./utils/handleListeners";
 
