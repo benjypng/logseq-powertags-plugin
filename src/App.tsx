@@ -11,7 +11,7 @@ export default function App(props: { savedTags: any[] }) {
   });
 
   return (
-    <div className="flex justify-end border border-black px-3" tabIndex={-1}>
+    <div className="flex justify-end px-3" tabIndex={-1}>
       <div className="absolute top-10 bg-white rounded-lg p-3 w-1/3 border text-sm">
         {/* Start content here */}
         <h1 className="mb-3 text-black text-xl">Manage Power Tags</h1>

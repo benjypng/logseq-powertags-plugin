@@ -20,9 +20,9 @@ function main() {
   }
 
   // CREATE TAG
-  logseq.Editor.registerSlashCommand("Create power tag", async function (e) {
-    const blk = await logseq.Editor.getBlock(e.uuid);
-    const tag = findTag(blk!.content);
+  logseq.Editor.registerSlashCommand("Create power tag", async function () {
+    const content = await logseq.Editor.getEditingBlockContent();
+    const tag = findTag(content);
 
     ReactDOM.render(
       <React.StrictMode>

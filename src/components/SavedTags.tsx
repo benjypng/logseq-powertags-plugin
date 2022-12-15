@@ -46,6 +46,38 @@ export default function SavedTags(props: {
     logseq.hideMainUI();
   }
 
+  async function removeProperty(e) {
+    let results = await logseq.DB.datascriptQuery(`
+				[:find (pull ?b [*])
+    		 :where
+         [?b :block/path-refs [:block/name "${props.tag.substring(1)}"]]]
+`);
+
+    results = results
+      .map((r: BlockEntity[]) => r[0])
+      .filter((r: BlockEntity) => r.content !== props.tag)
+      .filter((r: BlockEntity) => Object.keys(r.properties!).length > 0)
+      .map(async (r: BlockEntity) => {
+        await logseq.Editor.removeBlockProperty(r.uuid, e.target.id);
+      });
+
+    const properties = logseq.settings!.savedTags[props.tag];
+    properties.splice(properties.indexOf(e.target.id), 1);
+    logseq.updateSettings({
+      savedTags: {
+        [props.tag]: "why why why",
+      },
+    });
+
+    logseq.updateSettings({
+      savedTags: {
+        [props.tag]: properties,
+      },
+    });
+
+    logseq.hideMainUI();
+  }
+
   return (
     <div className="bg-purple-200 rounded-lg p-3 mb-2 flex flex-row justify-between">
       {!warning && (
@@ -54,7 +86,10 @@ export default function SavedTags(props: {
             <p className="font-bold mb-1">{props.tag}</p>
             {props.properties.map((p) => (
               <span className="mr-1 px-2 py-1 rounded-full text-xs bg-blue-500 text-white">
-                {p}
+                {p}{" "}
+                <button onClick={removeProperty} id={p}>
+                  x
+                </button>
               </span>
             ))}
           </div>
