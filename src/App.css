@@ -643,6 +643,9 @@ select {
 .h-6 {
   height: 1.5rem;
 }
+.w-1\/2 {
+  width: 50%;
+}
 .w-1\/3 {
   width: 33.333333%;
 }
