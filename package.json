@@ -5,14 +5,14 @@
     "icon": "./icon.svg"
   },
   "name": "logseq-powertags-plugin",
-  "version": "0.0.5alpha",
+  "version": "0.0.6alpha",
   "description": "",
   "main": "dist/index.html",
   "targets": {
     "main": false
   },
   "scripts": {
-    "build": "rm -R dist && echo 'dist folder removed'; postcss src/tailwind.css -o src/App.css && parcel build --no-source-maps --no-optimize src/index.html --public-url ./"
+    "build": "rm -R dist && echo 'dist folder removed'; postcss src/tailwind.css -o src/App.css && parcel build --no-source-maps src/index.html --public-url ./"
   },
   "keywords": [],
   "author": "hkgnp",
