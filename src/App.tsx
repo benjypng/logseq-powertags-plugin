@@ -1,16 +1,26 @@
 import "@logseq/libs";
-import React, { useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import "./App.css";
 //let blk = await logseq.DB.datascriptQuery(`
 //[:find (pull ?b [*])
 //    :where
 //        [?b :block/path-refs [:block/name "${props.tag}"]]]
 //`);
-export default function App(props: { tag: string | number }) {
+export default function App(props: {
+  tag: string | number;
+  checkExistingTag: boolean;
+}) {
   const [properties, setProperties] = useState("");
   const [propertyList, setPropertyList] = useState<string[]>([]);
 
-  console.log(props.tag);
+  useEffect(function () {
+    if (props.checkExistingTag) {
+      setPropertyList(logseq.settings!.savedTags[props.tag]);
+    } else {
+      setPropertyList([]);
+    }
+  });
+
   function handleForm(e: React.ChangeEvent<HTMLInputElement>) {
     setProperties(([e.target.name] = e.target.value));
   }
@@ -48,7 +58,7 @@ export default function App(props: { tag: string | number }) {
     <div className="flex justify-center border border-black" tabIndex={-1}>
       <div className="absolute top-10 bg-white rounded-lg p-3 w-1/3 border text-sm">
         {/* Start content here */}
-        <h1 className="mb-3 text-black text-lg">Create Auto Properties</h1>
+        <h1 className="mb-3 text-black text-lg">Manage Power Tags</h1>
         <p className="mb-3">
           Please start keying in properties for{" "}
           {props.tag !== -1 ? (

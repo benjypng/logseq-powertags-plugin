@@ -9,23 +9,24 @@ import handleListeners from "./utils/handleListeners";
 function main() {
   console.log("logseq-powertags-plugin loaded");
 
+  handleListeners();
+
   if (!logseq.settings!.allTags) {
     logseq.updateSettings({
       savedTags: {},
     });
   }
 
-  handleListeners();
-
-  logseq.Editor.registerSlashCommand("Create Powertag", async function () {
+  logseq.Editor.registerSlashCommand("Manage Power Tags", async function () {
     const content: string = await logseq.Editor.getEditingBlockContent();
     const tag: string = findTag(content) as string;
+    const checkExistingTag = logseq.settings!.savedTags[tag];
 
     logseq.showMainUI();
 
     ReactDOM.render(
       <React.StrictMode>
-        <App tag={tag} />
+        <App tag={tag} checkExistingTag={checkExistingTag} />
       </React.StrictMode>,
       document.getElementById("app")
     );
