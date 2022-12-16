@@ -5,7 +5,7 @@
     "icon": "./icon.svg"
   },
   "name": "logseq-powertags-plugin",
-  "version": "0.0.8alpha",
+  "version": "0.0.9alpha",
   "description": "",
   "main": "dist/index.html",
   "targets": {
@@ -20,7 +20,6 @@
   "dependencies": {
     "@logseq/libs": "^0.0.10",
     "@tailwindcss/forms": "^0.5.3",
-    "cssnano": "^5.1.14",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tailwindcss": "^3.2.4"
@@ -30,6 +29,7 @@
     "@types/react-dom": "^18.0.9",
     "parcel": "^2.8.0",
     "postcss": "^8.4.19",
-    "postcss-cli": "^10.0.0"
+    "postcss-cli": "^10.0.0",
+    "cssnano": "^5.1.14"
   }
 }

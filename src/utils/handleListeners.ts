@@ -17,4 +17,12 @@ export default function handleListeners() {
       (document.getElementById("text-field") as HTMLElement).focus();
     }
   });
+
+  // Click
+  document.addEventListener("click", (e) => {
+    if (!(e.target as HTMLElement).closest("#card")) {
+      logseq.hideMainUI({ restoreEditingCursor: true });
+    }
+    e.stopPropagation();
+  });
 }

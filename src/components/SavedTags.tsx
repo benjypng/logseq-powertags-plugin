@@ -105,7 +105,7 @@ export default function SavedTags(props: {
     <div className="bg-purple-200 rounded-lg p-3 mb-2 flex flex-row justify-between">
       {!warning && !propertyInput && (
         <React.Fragment>
-          <div className="w-3/4 align-middle">
+          <div className="w-3/4 align-middle" id="card">
             <p className="font-bold mb-1">{props.tag}</p>
             {props.properties.map((p) => (
               <span className="mr-1 px-2 py-1 rounded-full text-xs bg-blue-500 text-white">
