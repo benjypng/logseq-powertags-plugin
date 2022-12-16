@@ -55,7 +55,7 @@ function main() {
 
   logseq.App.registerUIItem("toolbar", {
     key: "logseq-clock-plugin",
-    template: `<a data-on-click="manageTag" class="button"><i class="ti ti-hash"></i></a>`,
+    template: `<a data-on-click="manageTag" class="button"><i class="ti ti-tag"></i></a>`,
   });
 
   //@ts-expect-error
