@@ -14,7 +14,9 @@ export default function handleListeners() {
   // Auto focus
   document.addEventListener("keydown", (e: any) => {
     if (e.key !== "Escape") {
-      (document.getElementById("text-field") as HTMLElement).focus();
+      if (document.getElementById("text-field")) {
+        (document.getElementById("text-field") as HTMLElement).focus();
+      }
     }
   });
 
