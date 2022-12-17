@@ -55,7 +55,7 @@ function main() {
   });
 
   logseq.App.registerUIItem("toolbar", {
-    key: "logseq-clock-plugin",
+    key: "logseq-powertags-plugin",
     template: `<a data-on-click="manageTag" class="button"><i class="ti ti-tag"></i></a>`,
   });
 
