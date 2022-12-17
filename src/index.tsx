@@ -3,6 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import CreateTag from "./components/CreateTag";
+import settings from "./services/callSettings";
 import observerCallback from "./services/observerCallback";
 import findTag from "./utils/findTag";
 import handleListeners from "./utils/handleListeners";
@@ -69,4 +70,4 @@ function main() {
   });
 }
 
-logseq.ready(main).catch(console.error);
+logseq.useSettingsSchema(settings).ready(main).catch(console.error);

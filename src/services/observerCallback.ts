@@ -20,6 +20,8 @@ export default async function observerCallback(mutationsList: any[]) {
         logseq.settings!.savedTags[tag] &&
         Object.keys(blk!.properties!).length === 0
       ) {
+        if (logseq.settings!.addTypeProperty)
+          await logseq.Editor.upsertBlockProperty(uuid, "type", tag);
         logseq.settings!.savedTags[tag].map(async (t: string) => {
           await logseq.Editor.upsertBlockProperty(uuid, t, "...");
         });

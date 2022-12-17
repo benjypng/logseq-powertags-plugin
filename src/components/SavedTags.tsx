@@ -102,7 +102,7 @@ export default function SavedTags(props: {
   }
 
   return (
-    <div className="bg-purple-200 rounded-lg p-3 mb-2 flex flex-row justify-between">
+    <div className="bg-gray-200 border border-blue-800 rounded-lg p-3 mb-2 flex flex-row justify-between">
       {!warning && !propertyInput && (
         <React.Fragment>
           <div className="w-3/4 align-middle" id="card">
