@@ -60,7 +60,10 @@ export default function CreateTag(props: { tag: string | number }) {
   }
   return (
     <div className="flex justify-end p-3" tabIndex={-1}>
-      <div className="absolute top-10 bg-white rounded-lg p-3 w-1/2 border text-sm">
+      <div
+        className="absolute top-10 bg-white rounded-lg p-3 w-1/2 border text-sm"
+        id="card"
+      >
         <h1 className="text-xl mb-2">Create Power Tag</h1>
 
         {repeatTag && (
