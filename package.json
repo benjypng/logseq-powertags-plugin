@@ -27,9 +27,9 @@
   "devDependencies": {
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.9",
+    "cssnano": "^5.1.14",
     "parcel": "^2.8.0",
     "postcss": "^8.4.19",
-    "postcss-cli": "^10.0.0",
-    "cssnano": "^5.1.14"
+    "postcss-cli": "^10.0.0"
   }
 }

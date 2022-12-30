@@ -36,7 +36,7 @@ function main() {
 
   // MANAGE TAGS
   logseq.provideModel({
-    manageTag() {
+    async manageTag() {
       const mappedSavedTags = Object.entries(logseq.settings!.savedTags).map(
         (i) => ({
           tag: i[0],
