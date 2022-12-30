@@ -33,6 +33,7 @@ body:
         - MacOS
         - Linux
         - Others
+    validations:
       required: true
   - type: textarea
     id: what-happened
