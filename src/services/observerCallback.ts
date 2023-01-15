@@ -23,9 +23,25 @@ export default async function observerCallback(mutationsList: any[]) {
         if (logseq.settings!.addTypeProperty)
           await logseq.Editor.upsertBlockProperty(uuid, "type", tag);
 
-        logseq.settings!.savedTags[tag].map(async (t: string) => {
-          await logseq.Editor.upsertBlockProperty(uuid, t, "...");
-        });
+        if (
+          logseq.settings!.autoParse &&
+          blk!.content.includes("{") &&
+          blk!.content.includes("}")
+        ) {
+          const regExp = /\{(.*?)\}/;
+          const autoParseVars = regExp.exec(blk!.content.trim())![1].split(",");
+          for (let i = 0; i < autoParseVars.length; i++) {
+            await logseq.Editor.upsertBlockProperty(
+              uuid,
+              logseq.settings!.savedTags[tag][i],
+              autoParseVars[i]
+            );
+          }
+        } else {
+          logseq.settings!.savedTags[tag].map(async (t: string) => {
+            await logseq.Editor.upsertBlockProperty(uuid, t, "...");
+          });
+        }
       }
     }
   }

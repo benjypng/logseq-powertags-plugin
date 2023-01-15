@@ -5,7 +5,7 @@
     "icon": "./icon.svg"
   },
   "name": "logseq-powertags-plugin",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "",
   "main": "dist/index.html",
   "targets": {
@@ -29,7 +29,6 @@
     "@types/react-dom": "^18.0.10",
     "cssnano": "^5.1.14",
     "parcel": "^2.8.2",
-    "postcss": "^8.4.20",
     "postcss-cli": "^10.1.0"
   }
 }
