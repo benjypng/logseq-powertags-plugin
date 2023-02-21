@@ -5,7 +5,7 @@
     "icon": "./icon.svg"
   },
   "name": "logseq-powertags-plugin",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "",
   "main": "dist/index.html",
   "targets": {

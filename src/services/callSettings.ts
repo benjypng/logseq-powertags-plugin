@@ -17,6 +17,14 @@ const settings: SettingSchemaDesc[] = [
     description:
       "If set to true, plugin will autoparse whatever is between braces e.g. {}, in order of the properties that have been set.",
   },
+  {
+    key: "parseBlock",
+    type: "boolean",
+    default: false,
+    title: "Parse Block (Experimental)",
+    description:
+      "If set to true, plugin will parse the block based on what are in the properties.",
+  },
 ];
 
 export default settings;
