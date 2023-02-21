@@ -68,6 +68,31 @@ function main() {
     childList: true,
     subtree: true,
   });
+
+  logseq.App.onMacroRendererSlotted(async ({ payload, slot }) => {
+    let [type, content] = payload.arguments;
+    const uuid = payload.uuid;
+    if (!type.startsWith(":dynamic-block_")) return;
+
+    const blk = await logseq.Editor.getBlock(uuid);
+    const propertiesArr = Object.keys(blk!.properties!);
+
+    for (const k of propertiesArr) {
+      content = content.replace(
+        k,
+        await logseq.Editor.getBlockProperty(uuid, k)
+      );
+    }
+
+    logseq.provideUI({
+      key: `${slot}`,
+      slot,
+      reset: true,
+      template: `<p data-slot-id=${slot} class="dynamic-block">${content
+        .replace('"', "")
+        .replace('"', "")}</p>`,
+    });
+  });
 }
 
 logseq.useSettingsSchema(settings).ready(main).catch(console.error);

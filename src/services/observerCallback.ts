@@ -15,32 +15,6 @@ export default async function observerCallback(mutationsList: any[]) {
       const tag = findTag(blk!.content);
 
       if (
-        logseq.settings!.autoParse &&
-        blk!.content.includes("{(") &&
-        blk!.content.includes(")}")
-      ) {
-        const regExp = /\{\((.*?)\)\}/;
-        const autoParseVars = regExp.exec(blk!.content.trim())![1].split(",");
-
-        let content = blk!.content;
-
-        for (const v of autoParseVars) {
-          const propertyVal = await logseq.Editor.getBlockProperty(
-            uuid,
-            v.trim()
-          );
-          if (propertyVal) {
-            content = content
-              .replace(v.trim(), propertyVal)
-              .replace("{(", "")
-              .replace(")}", "");
-          }
-        }
-        await logseq.Editor.updateBlock(uuid, content);
-        return;
-      }
-
-      if (
         tag !== -1 &&
         tag !== blk!.content &&
         logseq.settings!.savedTags[tag] &&
