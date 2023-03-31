@@ -109,6 +109,7 @@ export default function SavedTags(props: {
             <div className="w-3/4 align-middle">
               <h5 className="mt-0 mb-4 text-xl font-medium leading-tight text-primary">
                 {props.tag}
+
                 {!propertyInput && (
                   <span
                     onClick={addProperty}

@@ -59,65 +59,67 @@ export default function CreateTag(props: { tag: string | number }) {
     }
   }
   return (
-    <div className="flex justify-end p-3" tabIndex={-1}>
-      <div
-        className="absolute top-10 bg-white rounded-lg p-3 w-1/2 border text-sm"
-        id="card"
-      >
-        <h1 className="text-xl mb-2">Create Power Tag</h1>
+    <div className="flex justify-center px-3" tabIndex={-1} id="container">
+      <div className="absolute top-10 bg-white rounded-lg p-3 w-100 border">
+        <div className="bg-white rounded-lg p-3 mb-2">
+          <h5 className="mt-0 mb-4 text-xl font-medium leading-tight text-primary">
+            Create Power Tags for {tag}
+          </h5>
 
-        {repeatTag && (
-          <p className="mb-2">
-            You have already created a power tag for this tag
-          </p>
-        )}
+          {repeatTag && (
+            <p className="mb-2">
+              You have already created a power tag for this tag.
+            </p>
+          )}
+          {!repeatTag && tag === -1 && (
+            <p className="mb-2">You have not selected a tag.</p>
+          )}
 
-        {!repeatTag && (
-          <React.Fragment>
+          {!repeatTag && tag !== -1 && (
             <div>
-              {tag !== -1 && (
-                <p className="mb-2">
-                  Enter properties for{" "}
-                  <span className="px-2 py-1 rounded-full text-xs text-white bg-blue-500">
-                    {tag}
-                  </span>{" "}
-                  below
-                </p>
-              )}
-              {tag === -1 && (
-                <p className="mb-2">You have not selected a tag!</p>
-              )}
-              <input
-                id="text-field"
-                type="text"
-                name="property"
-                className="px-2 py-1 rounded-xl mb-3 w-full h-6"
-                value={properties}
-                onChange={handleForm}
-                onKeyDown={(e) => handleSubmit(e)}
-              />
-            </div>
-
-            <div>
-              {propertyList.map((p) => (
-                <span className="bg-blue-800 px-2 py-1 text-white rounded-full mr-1 text-xs">
-                  {p}
-                </span>
-              ))}
-            </div>
-
-            <div className="mt-4">
-              {tag !== -1 && (
-                <button
-                  className="border border-purple-600 text-black px-1 rounded-md hover:text-white hover:bg-purple-600"
-                  onClick={saveProperty}
+              <div
+                className="relative mb-3 mt-5 align-middle"
+                data-te-input-wrapper-init
+              >
+                <input
+                  id="text-field"
+                  type="text"
+                  name="property"
+                  value={properties}
+                  onChange={handleForm}
+                  onKeyDown={(e) => handleSubmit(e)}
+                  className="peer block min-h-[auto] rounded w-full border-b-primary bg-transparent py-[0.32rem] px-3 leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-black dark:placeholder:text-black [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                  id="text-field"
+                />
+                <label
+                  for="text-field"
+                  className="pointer-events-none absolute top-0 left-3 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-black transition-all duration-200 ease-out peer-focus:-translate-y-[1.3rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[1.3rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-gray-500 dark:peer-focus:text-gray-500"
                 >
-                  Save
-                </button>
-              )}
+                  Enter properties separated by comma.
+                </label>
+              </div>
+
+              <div className="flex flex-row justify-between border">
+                <div className="w-3/4 flex flex-wrap gap-2">
+                  {propertyList.map((p) => (
+                    <div className="flex flex-row border-2 border-primary align-middle">
+                      <div className="px-3 pt-1">{p}</div>
+                    </div>
+                  ))}
+                </div>
+                <div className="w-1/4 flex justify-end">
+                  <button
+                    onClick={saveProperty}
+                    type="button"
+                    className="inline-block rounded bg-primary px-6 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]"
+                  >
+                    Save Properties
+                  </button>
+                </div>
+              </div>
             </div>
-          </React.Fragment>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );
