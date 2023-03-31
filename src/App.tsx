@@ -11,8 +11,8 @@ export default function App(props: { savedTags: any[] }) {
   });
 
   return (
-    <div className="flex justify-end px-3" id="container" tabIndex={-1}>
-      <div className="absolute top-10 bg-white rounded-lg p-3 w-1/2 border text-sm">
+    <div className="flex justify-center px-3" tabIndex={-1} id="container">
+      <div className="absolute top-10 bg-gray-100 rounded-lg p-3 w-100 border">
         {/* Start content here */}
         <h1 className="mb-3 text-black text-xl">Manage Power Tags</h1>
         {savedTags.length > 0 &&

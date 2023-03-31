@@ -22,7 +22,7 @@ export default function handleListeners() {
 
   // Click
   document.addEventListener("click", (e) => {
-    if (!(e.target as HTMLElement).closest("#card")) {
+    if (!(e.target as HTMLElement).closest("#container")) {
       logseq.hideMainUI({ restoreEditingCursor: true });
     }
     e.stopPropagation();

@@ -7,6 +7,7 @@ import settings from "./services/callSettings";
 import observerCallback from "./services/observerCallback";
 import findTag from "./utils/findTag";
 import handleListeners from "./utils/handleListeners";
+import * as te from "tw-elements";
 
 function main() {
   console.log("logseq-powertags-plugin loaded");
