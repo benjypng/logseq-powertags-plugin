@@ -99,7 +99,7 @@ export default function CreateTag(props: { tag: string | number }) {
                 </label>
               </div>
 
-              <div className="flex flex-row justify-between border">
+              <div className="flex flex-row justify-between">
                 <div className="w-3/4 flex flex-wrap gap-2">
                   {propertyList.map((p) => (
                     <div className="flex flex-row border-2 border-primary align-middle">
