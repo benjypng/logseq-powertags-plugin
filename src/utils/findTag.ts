@@ -10,10 +10,18 @@ export default function findTag(content: string) {
     }
   } else {
     // check if single word
-    const arr = content.split(" ");
-    const indexOfTag = arr.findIndex((e) => e.startsWith("#"));
-    if (indexOfTag !== -1) {
-      return arr[indexOfTag].split("\n")[0];
+    const arr = content.split(" ").filter((e) => e.startsWith("#"));
+    if (arr.length === 1) {
+      return arr[0];
+    } else if (arr.length > 1) {
+      for (const t of arr) {
+        if (logseq.settings?.savedTags[t]) {
+          return t;
+        } else {
+          continue;
+        }
+      }
+      return -1;
     } else {
       return -1;
     }
