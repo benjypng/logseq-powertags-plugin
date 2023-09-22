@@ -1,18 +1,27 @@
 import "@logseq/libs";
-import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import App from "./App";
 import CreateTag from "./components/CreateTag";
 import settings from "./services/callSettings";
 import observerCallback from "./services/observerCallback";
-import findTag from "./utils/findTag";
+import { findTag } from "./utils/findTag";
 import handleListeners from "./utils/handleListeners";
-import "tailwind.css";
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 
 function main() {
   console.log("logseq-powertags-plugin loaded");
 
   handleListeners();
+
+  const theme = extendTheme({
+    styles: {
+      global: () => ({
+        body: {
+          background: "",
+        },
+      }),
+    },
+  });
 
   // Create setup
   if (!logseq.settings!.savedTags) {
@@ -30,12 +39,16 @@ function main() {
   logseq.Editor.registerSlashCommand("Create power tag", async function () {
     const content = await logseq.Editor.getEditingBlockContent();
     const tag = findTag(content);
+    if (!tag) {
+      await logseq.UI.showMsg("No tag found", "error");
+      return;
+    }
 
-    ReactDOM.render(
-      <React.StrictMode>
-        <CreateTag tag={tag} />;
-      </React.StrictMode>,
-      document.getElementById("app"),
+    const root = createRoot(document.getElementById("app") as HTMLElement);
+    root.render(
+      <ChakraProvider theme={theme}>
+        <CreateTag tag={tag} />
+      </ChakraProvider>,
     );
     logseq.showMainUI();
   });

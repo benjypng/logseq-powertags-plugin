@@ -1,4 +1,4 @@
-import findTag from "../utils/findTag";
+import { findTag } from "../utils/findTag";
 
 export default async function observerCallback(mutationsList: any[]) {
   for (const mutation of mutationsList) {
@@ -36,7 +36,7 @@ export default async function observerCallback(mutationsList: any[]) {
               await logseq.Editor.upsertBlockProperty(
                 uuid,
                 logseq.settings!.savedTags[tag][i],
-                autoParseVars[i]
+                autoParseVars[i],
               );
             }
           } else {
@@ -53,7 +53,7 @@ export default async function observerCallback(mutationsList: any[]) {
             let savedBlks = logseq.settings!.savedBlks;
             savedBlks[uuid] = blk!.content.substring(
               0,
-              blk!.content.indexOf("\n")
+              blk!.content.indexOf("\n"),
             );
             logseq.updateSettings({
               savedBlks: savedBlks,
@@ -65,7 +65,7 @@ export default async function observerCallback(mutationsList: any[]) {
           await logseq.Editor.updateBlock(
             uuid,
             logseq.settings!.savedBlks[uuid] +
-              content.substring(content.indexOf("\n"))
+              content.substring(content.indexOf("\n")),
           );
 
           let tmpContent =

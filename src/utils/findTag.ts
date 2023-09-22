@@ -1,4 +1,4 @@
-export default function findTag(content: string) {
+export const findTag = (content: string) => {
   // check if multi word between brackets
   if (content.includes("#[[") && content.includes("]]")) {
     const regExp = /\#\[\[(.*?)\]\]/;
@@ -6,7 +6,7 @@ export default function findTag(content: string) {
     if (matched) {
       return matched[0];
     } else {
-      return -1;
+      return;
     }
   } else {
     // check if single word
@@ -21,9 +21,9 @@ export default function findTag(content: string) {
           continue;
         }
       }
-      return -1;
+      return;
     } else {
-      return -1;
+      return;
     }
   }
-}
+};

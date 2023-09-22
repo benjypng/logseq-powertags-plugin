@@ -8,7 +8,7 @@ export default function handleListeners() {
       }
       e.stopPropagation();
     },
-    false
+    false,
   );
 
   // Auto focus
@@ -20,11 +20,11 @@ export default function handleListeners() {
     }
   });
 
-  // Click
-  document.addEventListener("click", (e) => {
-    if (!(e.target as HTMLElement).closest("#container")) {
-      logseq.hideMainUI({ restoreEditingCursor: true });
-    }
-    e.stopPropagation();
-  });
+  //// Click
+  //document.addEventListener("click", (e) => {
+  //  if (!(e.target as HTMLElement).closest("#container")) {
+  //    logseq.hideMainUI({ restoreEditingCursor: true });
+  //  }
+  //  e.stopPropagation();
+  //});
 }
