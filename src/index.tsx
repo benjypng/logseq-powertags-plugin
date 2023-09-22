@@ -7,7 +7,7 @@ import settings from "./services/callSettings";
 import observerCallback from "./services/observerCallback";
 import findTag from "./utils/findTag";
 import handleListeners from "./utils/handleListeners";
-import * as te from "tw-elements";
+import "tailwind.css";
 
 function main() {
   console.log("logseq-powertags-plugin loaded");
@@ -35,7 +35,7 @@ function main() {
       <React.StrictMode>
         <CreateTag tag={tag} />;
       </React.StrictMode>,
-      document.getElementById("app")
+      document.getElementById("app"),
     );
     logseq.showMainUI();
   });
@@ -47,14 +47,14 @@ function main() {
         (i) => ({
           tag: i[0],
           properties: i[1],
-        })
+        }),
       );
 
       ReactDOM.render(
         <React.StrictMode>
           <App savedTags={mappedSavedTags} />
         </React.StrictMode>,
-        document.getElementById("app")
+        document.getElementById("app"),
       );
       logseq.showMainUI();
     },

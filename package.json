@@ -1,35 +1,45 @@
 {
+  "name": "logseq-powertags-plugin",
+  "author": "hkgnp",
+  "description": "Automatically create properties when using tags.",
+  "license": "MIT",
   "logseq": {
     "id": "logseq-powertags-plugin",
     "title": "logseq-powertags-plugin",
-    "icon": "./icon.svg"
-  },
-  "name": "logseq-powertags-plugin",
-  "version": "1.0.4",
-  "description": "",
-  "main": "dist/index.html",
-  "targets": {
-    "main": false
+    "icon": "./icon.svg",
+    "main": "dist/index.html"
   },
   "scripts": {
-    "build": "rm -R dist && echo 'dist folder removed'; postcss src/tailwind.css -o src/App.css && parcel build --no-source-maps src/index.html --public-url ./"
+    "dev:start": "pnpm i @logseq/libs -S && npm i @types/eslint @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint eslint-config-prettier eslint-plugin-prettier prettier vite vite-plugin-logseq vite-tsconfig-paths -D",
+    "dev:tailwind": "pnpm i tailwindcss cssnano autoprefixer -D && touch tailwind.config.js && touch .postcssrc.cjs && touch src/tailwind.css",
+    "dev": "npx vite",
+    "build": "npx tsc && npx vite build",
+    "preview": "npx vite preview"
   },
-  "keywords": [],
-  "author": "hkgnp",
-  "license": "MIT",
-  "dependencies": {
-    "@logseq/libs": "^0.0.14",
-    "@tailwindcss/forms": "^0.5.3",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "tailwindcss": "^3.2.4",
-    "tw-elements": "^1.0.0-beta1"
+  "release": {
+    "branches": [
+      "main"
+    ],
+    "plugins": [
+      [
+        "@semantic-release/github",
+        {
+          "assets": [
+            "logseq-powertags-plugin.zip"
+          ]
+        }
+      ]
+    ]
   },
   "devDependencies": {
-    "@types/react": "^18.0.26",
-    "@types/react-dom": "^18.0.10",
-    "cssnano": "^5.1.14",
-    "parcel": "^2.8.2",
-    "postcss-cli": "^10.1.0"
+    "@logseq/libs": "^0.0.15",
+    "@tailwindcss/forms": "^0.5.6",
+    "@types/react": "^18.2.22",
+    "@types/react-dom": "^18.2.7",
+    "cssnano": "^6.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^3.3.3",
+    "tw-elements": "^1.0.0"
   }
 }
