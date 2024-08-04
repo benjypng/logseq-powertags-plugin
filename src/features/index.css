@@ -100,7 +100,8 @@ button:hover {
 	gap: 5px
 }
 
-.tag-input button, .property-input button {
+.tag-input button,
+.property-input button {
 	background-color: #ddd;
 	color: #000;
 	border: none;
@@ -142,6 +143,23 @@ button:hover {
 
 .tag-management h3 {
 	margin-bottom: 10px;
+}
+
+.tag-management-header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 0.5rem;
+}
+
+.tag-management-header button {
+	background-color: #e74c3c;
+	font-size: 0.7rem;
+}
+
+.tag-management-header button:hover {
+	background-color: #c0392b;
 }
 
 .sortable-property {
