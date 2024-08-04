@@ -2,10 +2,10 @@ import '@logseq/libs'
 
 import { createRoot } from 'react-dom/client'
 
-import PowerTags from './components/PowerTags'
+import PowerTags from './features'
 import { handlePopup } from './handle-popup'
-import settings from './services/callSettings'
 import observerCallback from './services/observerCallback'
+import settings from './settings'
 
 const main = () => {
   console.log('logseq-powertags-plugin loaded')
@@ -14,11 +14,11 @@ const main = () => {
   const el = document.getElementById('app')
   if (!el) return
   const root = createRoot(el)
-  root.render(<PowerTags />)
 
   // MANAGE TAGS
   logseq.provideModel({
     async managePowerTags() {
+      root.render(<PowerTags />)
       logseq.showMainUI()
     },
   })

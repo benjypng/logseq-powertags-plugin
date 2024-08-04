@@ -136,6 +136,8 @@ button:hover {
 
 .tag-management {
 	margin-bottom: 20px;
+	background-color: #eee;
+	padding: 1rem;
 }
 
 .tag-management h3 {
@@ -145,6 +147,7 @@ button:hover {
 .sortable-property {
 	display: flex;
 	gap: 10px;
+	justify-content: space-between;
 	align-items: center;
 	padding: 10px;
 	background-color: #f9f9f9;
@@ -160,6 +163,7 @@ button:hover {
 
 .sortable-property button {
 	background-color: #e74c3c;
+	font-size: 0.7rem;
 }
 
 .sortable-property button:hover {

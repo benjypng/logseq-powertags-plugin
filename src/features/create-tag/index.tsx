@@ -9,7 +9,12 @@ interface PowerTag {
 }
 
 export const CreateTag = () => {
-  const { register, control, handleSubmit } = useForm({})
+  const { register, control, handleSubmit, watch, reset } = useForm<PowerTag>({
+    defaultValues: {
+      tagName: '',
+      properties: [{ name: '', value: '' }],
+    },
+  })
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -19,8 +24,15 @@ export const CreateTag = () => {
     },
   })
 
-  const onSubmit = (data: PowerTag) => {
-    console.log('Submitted data:', data)
+  const onSubmit = async (data: PowerTag) => {
+    logseq.updateSettings({
+      savedTags: {
+        [data.tagName]: data.properties,
+      },
+    })
+    reset()
+    logseq.hideMainUI()
+    await logseq.UI.showMsg('PowerTag saved!', 'success')
   }
 
   return (
@@ -35,7 +47,7 @@ export const CreateTag = () => {
               placeholder="Tag Input"
             />
           </div>
-          <button type="button" onClick={() => append({})}>
+          <button type="button" onClick={() => append({ name: '', value: '' })}>
             Add Property
           </button>
         </div>
@@ -48,12 +60,14 @@ export const CreateTag = () => {
               placeholder="Property"
             />
             <input
-              {...register(`properties.${index}.value`, { required: true })}
+              {...register(`properties.${index}.value`)}
               placeholder="Default value"
             />
-            <button type="button" onClick={() => remove(index)}>
-              -
-            </button>
+            {watch('properties').length > 1 && (
+              <button type="button" onClick={() => remove(index)}>
+                -
+              </button>
+            )}
           </div>
         ))}
         <button type="submit">Create Tag</button>
