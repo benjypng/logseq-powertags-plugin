@@ -10,6 +10,7 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
+import { IconMenuOrder } from '@tabler/icons-react'
 import {
   Dispatch,
   SetStateAction,
@@ -34,15 +35,13 @@ export const ManageTags = ({
     setLocalTags(tags)
   }, [tags])
 
-  const deleteProperty = useCallback(
-    (index: string, name: string) => {
-      console.log(index)
-      console.log(name)
-    },
-    [tags],
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
   )
-
-  const sensors = useSensors(useSensor(PointerSensor))
 
   const handleDragEnd = useCallback(
     (event: DragEndEvent) => {
@@ -50,34 +49,43 @@ export const ManageTags = ({
 
       if (active.id !== over?.id) {
         setLocalTags((prevTags) => {
-          if (!prevTags) return
+          if (!prevTags) return prevTags
+
           const newTags = { ...prevTags }
-          const activeIndex = prevTags[active.data.current!.index]!.findIndex(
+          const tagIndex = Object.keys(prevTags).find((key) =>
+            prevTags[key].some((prop) => prop.name === active.id),
+          )
+
+          if (!tagIndex) return prevTags
+
+          const activeIndex = prevTags[tagIndex].findIndex(
             (prop) => prop.name === active.id,
           )
-          const overIndex = prevTags[active.data.current!.index]!.findIndex(
+          const overIndex = prevTags[tagIndex].findIndex(
             (prop) => prop.name === over?.id,
           )
 
-          newTags[active.data.current!.index] = arrayMove(
-            prevTags[active.data.current!.index]!,
+          if (activeIndex === -1 || overIndex === -1) return prevTags
+
+          newTags[tagIndex] = arrayMove(
+            prevTags[tagIndex],
             activeIndex,
             overIndex,
           )
 
-          // 1. Update logseq.settings
-          // 2. Find all blocks with the specified tag
-          // 3. Store the values in variables
-          // 4. Remove the properties
-          // 5. Re-add the properties in the new specified order
-
-          console.log(
-            'New order of properties:',
-            newTags[active.data.current!.index],
-          )
+          console.log('New order of properties:', newTags[tagIndex])
           return newTags
         })
       }
+    },
+    [], // Remove the tags dependency as we're using the function form of setLocalTags
+  )
+
+  const deleteProperty = useCallback(
+    (index: string, name: string) => {
+      console.log('HELLO WORLD')
+      console.log(index)
+      console.log(name)
     },
     [tags],
   )
@@ -97,12 +105,21 @@ export const ManageTags = ({
             >
               {properties.map(({ name }) => (
                 <SortableItem key={name} id={name} index={index}>
-                  <div className="sortable-property">
-                    <p>{name}</p>
-                    <button onClick={() => deleteProperty(index, name)}>
-                      Delete
-                    </button>
-                  </div>
+                  {(attributes, listeners) => (
+                    <div className="sortable-property">
+                      <div
+                        className="icon-group"
+                        {...attributes}
+                        {...listeners}
+                      >
+                        <IconMenuOrder stroke={2} size="1rem" />
+                        <p>{name}</p>
+                      </div>
+                      <button onClick={() => deleteProperty(index, name)}>
+                        Delete
+                      </button>
+                    </div>
+                  )}
                 </SortableItem>
               ))}
             </SortableContext>

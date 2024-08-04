@@ -154,11 +154,14 @@ button:hover {
 	border: 1px solid #eee;
 	border-radius: 4px;
 	margin-bottom: 5px;
-	cursor: move;
 }
 
-.sortable-property input {
-	flex: 1;
+.sortable-property .icon-group {
+	display: flex;
+	gap: 0.5rem;
+	flex-direction: row;
+	align-items: center;
+	cursor: move;
 }
 
 .sortable-property button {
