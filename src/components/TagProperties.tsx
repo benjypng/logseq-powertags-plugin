@@ -73,9 +73,23 @@ export const TagProperties = ({
   }, [])
 
   const deleteProperty = useCallback(
-    (index: string, name: string) => {
-      console.log(index)
-      console.log(name)
+    async (index: string, name: string) => {
+      const currSavedTags = logseq.settings!.savedTags
+      const properties = currSavedTags[index]
+      currSavedTags[index] = properties.filter(
+        (property: { name: string }) => property.name !== name,
+      )
+
+      logseq.updateSettings({
+        savedTags: 'Need to add some arbitrary string first',
+      })
+      logseq.updateSettings({ savedTags: currSavedTags })
+
+      logseq.hideMainUI()
+      await logseq.UI.showMsg(
+        `Property ${name} deleted from #${index}`,
+        'success',
+      )
     },
     [tags],
   )
@@ -94,9 +108,11 @@ export const TagProperties = ({
                   <IconMenuOrder stroke={2} size="1rem" />
                   <p>{name}</p>
                 </div>
-                <button onClick={() => deleteProperty(index, name)}>
-                  <IconTrash stroke={2} size="1rem" />
-                </button>
+                {properties.length > 1 && (
+                  <button onClick={() => deleteProperty(index, name)}>
+                    <IconTrash stroke={2} size="1rem" />
+                  </button>
+                )}
               </div>
             )}
           </SortableItem>

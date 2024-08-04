@@ -30,7 +30,7 @@ const PowerTags = () => {
         </button>
       </div>
       <CreateTag />
-      <ManageTags tags={tags} setTags={setTags} />
+      <ManageTags tags={tags} />
     </div>
   )
 }

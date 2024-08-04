@@ -1,22 +1,9 @@
-import {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { TagProperties } from '../../components/TagProperties'
 import { Tag } from '..'
 
-export const ManageTags = ({
-  tags,
-  setTags,
-}: {
-  tags: Tag
-  setTags: Dispatch<SetStateAction<Tag>>
-}) => {
-  console.log(tags)
+export const ManageTags = ({ tags }: { tags: Tag }) => {
   const [localTags, setLocalTags] = useState<Tag>({})
 
   useEffect(() => {
@@ -24,15 +11,17 @@ export const ManageTags = ({
   }, [tags])
 
   const deletePowertag = useCallback(
-    (index: string) => {
-      console.log(index)
+    async (index: string) => {
       const currSavedTags = logseq.settings!.savedTags
       delete currSavedTags[index]
+
       logseq.updateSettings({
         savedTags: 'Need to add some arbitrary string first',
       })
       logseq.updateSettings({ savedTags: currSavedTags })
+
       logseq.hideMainUI()
+      await logseq.UI.showMsg(`PowerTag: ${index} deleted`, 'success')
     },
     [tags],
   )
