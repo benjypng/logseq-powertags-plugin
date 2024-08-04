@@ -25,6 +25,13 @@ export const CreateTag = () => {
   })
 
   const onSubmit = async (data: PowerTag) => {
+    // Check if tag already exists
+    const currSavedTags = logseq.settings!.savedTags
+    if (currSavedTags[data.tagName]) {
+      await logseq.UI.showMsg(`#${data.tagName} already exists`, 'error')
+      return
+    }
+
     logseq.updateSettings({
       savedTags: {
         [data.tagName]: data.properties,
