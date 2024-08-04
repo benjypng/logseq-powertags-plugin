@@ -37,7 +37,7 @@ export const TagProperties = ({
     }),
   )
 
-  const handleDragEnd = useCallback((event: DragEndEvent) => {
+  const handleDragEnd = useCallback(async (event: DragEndEvent) => {
     const { active, over } = event
 
     if (active.id !== over?.id) {
@@ -66,7 +66,14 @@ export const TagProperties = ({
           overIndex,
         )
 
-        console.log('New order of properties:', newTags[tagIndex])
+        const currSavedTags = logseq.settings!.savedTags
+        currSavedTags[index] = newTags[tagIndex]
+
+        logseq.updateSettings({
+          savedTags: 'Need to add some arbitrary string first',
+        })
+        logseq.updateSettings({ savedTags: currSavedTags })
+
         return newTags
       })
     }
