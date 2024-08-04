@@ -1,36 +1,59 @@
 {
-  "logseq": {
-    "id": "logseq-powertags-plugin",
-    "title": "logseq-powertags-plugin",
-    "icon": "./icon.svg"
-  },
-  "name": "logseq-powertags-plugin",
-  "version": "1.0.5",
-  "description": "",
-  "main": "dist/index.html",
-  "targets": {
-    "main": false
-  },
-  "scripts": {
-    "build": "rm -R dist && echo 'dist folder removed'; postcss src/tailwind.css -o src/App.css && parcel build --no-source-maps src/index.html --public-url ./"
-  },
-  "keywords": [],
-  "author": "hkgnp",
-  "license": "MIT",
-  "dependencies": {
-    "@logseq/libs": "^0.0.14",
-    "@tailwindcss/forms": "^0.5.3",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "tailwindcss": "^3.2.4",
-    "tw-elements": "^1.0.0-beta1"
-  },
-  "devDependencies": {
-    "@types/react": "^18.0.26",
-    "@types/react-dom": "^18.0.10",
-    "cssnano": "^5.1.14",
-    "parcel": "^2.8.2",
-    "postcss": "^8.4.31",
-    "postcss-cli": "^10.1.0"
-  }
+	"name": "logseq-powertags-plugin",
+	"author": "benjypng",
+	"description": "Automatically create block properties based on specified tags.",
+	"license": "MIT",
+	"logseq": {
+		"id": "logseq-powertags-plugin",
+		"title": "logseq-powertags-plugin",
+		"icon": "./icon.svg",
+		"main": "dist/index.html"
+	},
+	"scripts": {
+		"dev": "npx vite",
+		"build": "npx tsc && npx vite build",
+		"preview": "npx vite preview"
+	},
+	"release": {
+		"branches": [
+			"main"
+		],
+		"plugins": [
+			[
+				"@semantic-release/github",
+				{
+					"assets": [
+						"logseq-powertags-plugin.zip"
+					]
+				}
+			]
+		]
+	},
+	"dependencies": {
+		"@logseq/libs": "^0.0.15",
+		"react": "^18.3.1",
+		"react-dom": "^18.3.1",
+		"react-hook-form": "^7.52.2"
+	},
+	"devDependencies": {
+		"@eslint/js": "^9.6.0",
+		"@types/eslint": "^8.56.10",
+		"@types/eslint-config-prettier": "^6.11.3",
+		"@types/eslint__js": "^8.42.3",
+		"@types/node": "^20.14.10",
+		"@types/react": "^18.3.3",
+		"@types/react-dom": "^18.3.0",
+		"@typescript-eslint/eslint-plugin": "^6.21.0",
+		"@typescript-eslint/parser": "^6.21.0",
+		"eslint": "^8.57.0",
+		"eslint-config-prettier": "^9.1.0",
+		"eslint-plugin-prettier": "^5.1.3",
+		"eslint-plugin-simple-import-sort": "^12.1.1",
+		"prettier": "^3.3.2",
+		"typescript": "^5.5.3",
+		"typescript-eslint": "^7.15.0",
+		"vite": "^4.5.3",
+		"vite-plugin-logseq": "^1.1.2",
+		"vite-tsconfig-paths": "^4.3.2"
+	}
 }
