@@ -1,3 +1,5 @@
+import { handleDynamicVariables } from './services/handle-dynamic-variables'
+
 export const observerCallback = async (mutationsList: any[]) => {
   for (const mutation of mutationsList) {
     if (
@@ -31,13 +33,10 @@ export const observerCallback = async (mutationsList: any[]) => {
         )
         if (currProperty) continue
 
-        // TODO: Handle dynamic variables
+        // Handle dynamic variables
+        const propValue = await handleDynamicVariables(property.value)
 
-        await logseq.Editor.upsertBlockProperty(
-          uuid,
-          property.name,
-          property.value,
-        )
+        await logseq.Editor.upsertBlockProperty(uuid, property.name, propValue)
       }
     }
   }
