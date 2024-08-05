@@ -21,6 +21,7 @@ export const ManageTags = ({ tags }: { tags: Tag }) => {
       </p>
       {Object.entries(localTags).map(([index, properties]) => (
         <TagManagement
+          key={index}
           index={index}
           setLocalTags={setLocalTags}
           properties={properties}

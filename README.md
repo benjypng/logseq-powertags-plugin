@@ -23,10 +23,14 @@ This only applies to tags created using `#` and does not apply to page reference
 1. Click on the plugin icon.
 2. You will see a list of your created power tags.
 3. Any actions performed here will affect past blocks created with the tag. For example,
+   - Creating a new PowerTag
+     - Does not affect past blocks with the tag.
    - Deleting a PowerTag
      - Removes all properties from blocks that have the tag, even those not created with this plugin.
    - Deleting a property of a PowerTag
      - Removes the property from blocks that have the tag, even those not created with this plugin.
+   - Adding a property to an existing PowerTag
+     - Adds the property to all blocks that have the tag, even those not created with this plugin.
 
 > Important Note: Power tags are stored in the plugin settings. If the plugin settings file (found in `.logseq`) is deleted, you will need to manually create your power tags again.
 

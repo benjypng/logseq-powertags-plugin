@@ -1,7 +1,11 @@
 import { useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { TagProperties, TagPropertiesProps } from './TagProperties'
+import {
+  PropertiesProps,
+  TagProperties,
+  TagPropertiesProps,
+} from './TagProperties'
 
 interface FormData {
   [key: string]: {
@@ -16,7 +20,7 @@ export const TagManagement = ({
   properties,
   tags,
 }: TagPropertiesProps) => {
-  const { register, handleSubmit } = useForm()
+  const { register, handleSubmit, reset } = useForm()
 
   const deletePowertag = useCallback(
     async (index: string) => {
@@ -54,6 +58,14 @@ export const TagManagement = ({
       const tag = data[index]
 
       const currSavedTags = logseq.settings!.savedTags
+      const properties = currSavedTags[index]
+      const hasProp = properties.some(
+        (property: PropertiesProps) => property.name == tag.newProp,
+      )
+      if (hasProp) {
+        await logseq.UI.showMsg(`${tag.newProp} already exists`, 'error')
+        return
+      }
       currSavedTags[index].push({
         name: tag.newProp,
         value: tag.defaultValue,
@@ -63,6 +75,7 @@ export const TagManagement = ({
         savedTags: 'Need to add some arbitrary string first',
       })
       logseq.updateSettings({ savedTags: currSavedTags })
+      reset()
 
       const blocksWithPowertag = await logseq.DB.q(`[[${index}]]`)
       if (!blocksWithPowertag || blocksWithPowertag.length == 0) return
