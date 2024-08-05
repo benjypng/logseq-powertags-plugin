@@ -92,6 +92,11 @@ button:hover {
 	max-width: 490px;
 }
 
+.powertags-section > p {
+	margin-bottom: 1rem;
+	font-size: 0.8rem;
+}
+
 .tag-input,
 .property-input {
 	display: flex;
@@ -185,6 +190,7 @@ button:hover {
 .sortable-property button {
 	background-color: #e74c3c;
 	font-size: 0.7rem;
+	padding: 0.2rem;
 }
 
 .sortable-property button:hover {

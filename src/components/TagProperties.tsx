@@ -97,6 +97,13 @@ export const TagProperties = ({
         `Property ${name} deleted from #${index}`,
         'success',
       )
+
+      const blocksWithPowertag = await logseq.DB.q(`[[${index}]]`)
+      if (!blocksWithPowertag || blocksWithPowertag.length == 0) return
+      blocksWithPowertag.forEach(
+        async (block) =>
+          await logseq.Editor.removeBlockProperty(block.uuid, name),
+      )
     },
     [tags],
   )
@@ -117,7 +124,7 @@ export const TagProperties = ({
                 </div>
                 {properties.length > 1 && (
                   <button onClick={() => deleteProperty(index, name)}>
-                    <IconTrash stroke={2} size="1rem" />
+                    <IconTrash stroke={1} size="1rem" />
                   </button>
                 )}
               </div>

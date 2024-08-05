@@ -31,6 +31,10 @@ export const ManageTags = ({ tags }: { tags: Tag }) => {
   return (
     <div className="powertags-section">
       <h2>Manage</h2>
+      <p>
+        Deleting a PowerTag or property will affect all blocks that reference
+        this PowerTag
+      </p>
       {Object.entries(localTags).map(([index, properties]) => (
         <div key={index} className="tag-management">
           <div className="tag-management-header">
