@@ -30,7 +30,17 @@ This only applies to tags created using `#` and does not apply to page reference
    - Adding a property to an existing PowerTag
      - Adds the property to all blocks that have the tag, even those not created with this plugin.
 
-> Important Note: Power tags are stored in the plugin settings. If the plugin settings file (found in `.logseq`) is deleted, you will need to manually create your power tags again.
+> Important Note: PowerTags are stored in the plugin settings. If the plugin settings file (found in `.logseq`) is deleted, you will need to manually create your power tags again.
+
+## Using Power Tags
+
+### Option 1
+
+By default, PowerTags are automatically parse when you presss `Enter` to create a new block. You can turn this behaviour off in the plugin settings.
+
+### Option 2
+
+If you turn off auto-parse, you may trigger the parsing manually by using the slash command at the end of your block with the PowerTag, i.e. `/Parse PowerTag`
 
 # Installation
 
