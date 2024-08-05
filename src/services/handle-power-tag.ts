@@ -13,9 +13,12 @@ export const handlePowerTag = async (uuid: string) => {
   const powerTag = logseq.settings!.savedTags[tag]
   if (!powerTag) return
 
+  //****RULES OF ENGAGEMENT****//
   // Ignore if properties already exist
   // Handle partial properties
   // Handle no properties exist
+  //**************************//
+
   for (const property of powerTag) {
     const currProperty = await logseq.Editor.getBlockProperty(
       uuid,
