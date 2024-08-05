@@ -15,7 +15,6 @@ const main = () => {
   if (!el) return
   const root = createRoot(el)
 
-  // MANAGE TAGS
   logseq.provideModel({
     async managePowerTags() {
       root.render(<PowerTags />)
@@ -25,7 +24,7 @@ const main = () => {
 
   logseq.App.registerUIItem('toolbar', {
     key: 'logseq-powertags-plugin',
-    template: `<a data-on-click="managePowerTags" class="button"><i class="ti ti-tag"></i></a>`,
+    template: `<a data-on-click="managePowerTags" class="button"><i class="ti ti-hash"></i></a>`,
   })
 
   //@ts-expect-error need to access Logseq parent

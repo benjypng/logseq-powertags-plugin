@@ -32,20 +32,22 @@ export const TagManagement = ({
       })
       logseq.updateSettings({ savedTags: currSavedTags })
 
-      logseq.hideMainUI()
-      await logseq.UI.showMsg(`PowerTag: ${index} deleted`, 'success')
-
       const blocksWithPowertag = await logseq.DB.q(`[[${index}]]`)
       if (!blocksWithPowertag || blocksWithPowertag.length == 0) return
       blocksWithPowertag.forEach(async (block) => {
         const props = await logseq.Editor.getBlockProperties(block.uuid)
         const propKeyArr = Object.keys(props)
         if (!propKeyArr || propKeyArr.length == 0) return
-
         propKeyArr.forEach(
           async (propKey) =>
             await logseq.Editor.removeBlockProperty(block.uuid, propKey),
         )
+        await logseq.UI.showMsg(
+          `PowerTag ${index} deleted. Properties removed from ${block.uuid}`,
+          'success',
+        )
+
+        logseq.hideMainUI()
       })
     },
     [tags],
@@ -86,10 +88,13 @@ export const TagManagement = ({
           tag.newProp,
           tag.defaultValue,
         )
+        await logseq.UI.showMsg(
+          `New property added to ${index}. ${block.uuid} updated with new property`,
+          'success',
+        )
       })
 
       logseq.hideMainUI()
-      await logseq.UI.showMsg(`New property added to ${index}`, 'success')
     },
     [tags],
   )
