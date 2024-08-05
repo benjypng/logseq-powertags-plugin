@@ -17,12 +17,12 @@ import { Tag } from '../features'
 import { reorderProperties } from '../services/reorder-properties'
 import { SortableItem } from './SortableItem'
 
-interface PropertiesProps {
+export interface PropertiesProps {
   name: string
   value: string
 }
 
-interface TagPropertiesProps {
+export interface TagPropertiesProps {
   setLocalTags: Dispatch<SetStateAction<Tag>>
   index: string
   properties: PropertiesProps[]

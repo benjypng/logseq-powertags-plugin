@@ -43,7 +43,7 @@ export const CreateTag = () => {
   }
 
   return (
-    <div className="powertags-section">
+    <div id="section-create-powertag">
       <h2>Create</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="tag-input">

@@ -84,7 +84,7 @@ button:hover {
 	color: #000000;
 }
 
-.powertags-section {
+#section-manage-powertags, #section-create-powertag {
 	background-color: #ffffff;
 	border-radius: 4px;
 	padding: 10px;
@@ -92,9 +92,28 @@ button:hover {
 	max-width: 490px;
 }
 
-.powertags-section > p {
+#section-manage-powertags > p {
 	margin-bottom: 1rem;
 	font-size: 0.8rem;
+}
+
+.tag-management form {
+	display: flex;
+	justify-content: space-between;
+	gap: 0.5rem;
+	margin-top: 1rem;
+}
+
+.tag-management input {
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	font-size: 14px;
+	width: 100%;
+	padding: 0.5rem 0.5rem;
+}
+
+.tag-management button {
+	font-size: 0.7rem;
 }
 
 .tag-input,
@@ -159,12 +178,7 @@ button:hover {
 }
 
 .tag-management-header button {
-	background-color: #e74c3c;
 	font-size: 0.7rem;
-}
-
-.tag-management-header button:hover {
-	background-color: #c0392b;
 }
 
 .sortable-property {
