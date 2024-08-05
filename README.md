@@ -4,7 +4,7 @@
 
 # Introduction
 
-Designate selected tags as power tags, and see them auto-create properties are you use them.
+Designate selected hashtags as PowerTags, and see them auto-create properties are you use them. This only applies to tags created using `#` and does not apply to page references, block references without the `#` and blocks that have the `tag` property.
 
 ![](./screenshots/demo.gif)
 
