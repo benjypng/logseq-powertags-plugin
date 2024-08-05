@@ -22,6 +22,19 @@ export const ManageTags = ({ tags }: { tags: Tag }) => {
 
       logseq.hideMainUI()
       await logseq.UI.showMsg(`PowerTag: ${index} deleted`, 'success')
+
+      const blocksWithPowertag = await logseq.DB.q(`[[${index}]]`)
+      if (!blocksWithPowertag || blocksWithPowertag.length == 0) return
+      for (const block of blocksWithPowertag) {
+        const props = await logseq.Editor.getBlockProperties(block.uuid)
+        const propKeyArr = Object.keys(props)
+        if (!propKeyArr || propKeyArr.length == 0) continue
+
+        propKeyArr.forEach(
+          async (propKey) =>
+            await logseq.Editor.removeBlockProperty(block.uuid, propKey),
+        )
+      }
     },
     [tags],
   )
@@ -33,7 +46,7 @@ export const ManageTags = ({ tags }: { tags: Tag }) => {
       <h2>Manage</h2>
       <p>
         Deleting a PowerTag or property will affect all blocks that reference
-        this PowerTag
+        this PowerTag, even if they were not created with this plugin.
       </p>
       {Object.entries(localTags).map(([index, properties]) => (
         <div key={index} className="tag-management">
