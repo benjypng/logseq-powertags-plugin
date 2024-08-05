@@ -14,7 +14,8 @@ This only applies to tags created using `#` and does not apply to page reference
 
 1. Click on the plugin icon.
 2. Enter your PowerTag, followed by the properties to assign to the PowerTag. You may also assign a default value.
-3. Now the next time you use the tag, your properties will be auto-added.
+3. You may use *dynamic variables* in your default values. This will then be automatically populated when using your PowerTag. You may refer to the [Dynamic Variables]() section for available variables.
+4. Now the next time you use the tag, your properties will be auto-added.
 
 ## Managing Your Tags
 
@@ -41,6 +42,18 @@ By default, PowerTags are automatically parse when you presss `Enter` to create 
 ### Option 2
 
 If you turn off auto-parse, you may trigger the parsing manually by using the slash command at the end of your block with the PowerTag, i.e. `/Parse PowerTag`
+
+# Dynamic Variables
+
+The following are available to use in your default values:
+
+|Dynamic Variable|Remarks|
+|----------------|-------|
+|<% today %>|Inserts the date today based on your preferred date format|
+|<% yesterday %>|Inserts the date yesterday based on your preferred date format|
+|<% tomorrow %>|Inserts the date tomorrow based on your preferred date format|
+|<% time %>|Inserts the current time|
+|<% current page %>|Inserts the current page name|
 
 # Installation
 
