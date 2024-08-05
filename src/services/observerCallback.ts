@@ -1,8 +1,4 @@
-const findTag = (str: string) => {
-  return str
-}
-
-export default async function observerCallback(mutationsList: any[]) {
+export const observerCallback = async (mutationsList: any[]) => {
   for (const mutation of mutationsList) {
     if (
       mutation.type === 'childList' &&
@@ -14,77 +10,31 @@ export default async function observerCallback(mutationsList: any[]) {
         ?.getAttribute('blockid')
 
       const blk = await logseq.Editor.getBlock(uuid)
-      const tag = findTag(blk!.content)
+      if (!blk) return
+      const tagMatch = /#(?:\[\[(.*?)\]\]|(\w+))/.exec(blk.content)
+      if (!tagMatch) return
 
-      if (
-        tag !== -1 &&
-        tag !== blk!.content &&
-        logseq.settings!.savedTags[tag]
-      ) {
-        if (Object.keys(blk!.properties!).length === 0) {
-          if (logseq.settings!.addTypeProperty)
-            await logseq.Editor.upsertBlockProperty(uuid, 'type', tag)
+      // Check whether tag is a PowerTag
+      const tag = tagMatch[1] ?? tagMatch[2]
+      if (!tag) return
 
-          if (
-            logseq.settings!.autoParse &&
-            blk!.content.includes('{') &&
-            blk!.content.includes('}')
-          ) {
-            const regExp = /\{(.*?)\}/
-            const autoParseVars = regExp
-              .exec(blk!.content.trim())![1]
-              .split(',')
-            for (let i = 0; i < autoParseVars.length; i++) {
-              await logseq.Editor.upsertBlockProperty(
-                uuid,
-                logseq.settings!.savedTags[tag][i],
-                autoParseVars[i],
-              )
-            }
-          } else {
-            logseq.settings!.savedTags[tag].map(async (t: string) => {
-              await logseq.Editor.upsertBlockProperty(uuid, t, '...')
-            })
-          }
-        } else if (
-          Object.keys(blk!.properties!).length !== 0 &&
-          logseq.settings!.parseBlock
-        ) {
-          // Save original block
-          if (!logseq.settings!.savedBlks[uuid]) {
-            let savedBlks = logseq.settings!.savedBlks
-            savedBlks[uuid] = blk!.content.substring(
-              0,
-              blk!.content.indexOf('\n'),
-            )
-            logseq.updateSettings({
-              savedBlks: savedBlks,
-            })
-          }
+      const powerTag = logseq.settings!.savedTags[tag]
+      if (!powerTag) return
 
-          let content = blk!.content
-          const propertiesArr = Object.entries(blk!.properties!)
-          await logseq.Editor.updateBlock(
-            uuid,
-            logseq.settings!.savedBlks[uuid] +
-              content.substring(content.indexOf('\n')),
-          )
-
-          let tmpContent =
-            logseq.settings!.savedBlks[uuid] +
-            content.substring(content.indexOf('\n'))
-
-          for (const p of propertiesArr) {
-            if (p[1].length === 1) {
-              tmpContent = tmpContent.replace(p[0], `[[${p[1][0]}]]`)
-            } else {
-              tmpContent = tmpContent.replace(p[0], p[1])
-            }
-          }
-
-          await logseq.Editor.updateBlock(uuid, tmpContent)
-          return
-        }
+      // Ignore if properties already exist
+      // Handle partial properties
+      // Handle no properties exist
+      for (const property of powerTag) {
+        const currProperty = await logseq.Editor.getBlockProperty(
+          uuid,
+          property.name,
+        )
+        if (currProperty) continue
+        await logseq.Editor.upsertBlockProperty(
+          uuid,
+          property.name,
+          property.value,
+        )
       }
     }
   }
