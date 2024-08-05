@@ -1,6 +1,9 @@
 import { useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 
+import { updateBlocks } from '../services/core/update-blocks'
+import { updateSettings } from '../services/core/update-settings'
+import { handleDynamicVariables } from '../services/handle-dynamic-variables'
 import {
   PropertiesProps,
   TagProperties,
@@ -24,35 +27,21 @@ export const TagManagement = ({
 
   const deletePowertag = useCallback(
     async (index: string) => {
-      const currSavedTags = logseq.settings!.savedTags
-      delete currSavedTags[index]
-
-      logseq.updateSettings({
-        savedTags: 'Need to add some arbitrary string first',
+      updateSettings((currSavedTags) => {
+        const { [index]: _, ...rest } = currSavedTags
+        return rest
       })
-      logseq.updateSettings({ savedTags: currSavedTags })
-
-      const blocksWithPowertag = await logseq.DB.q(`[[${index}]]`)
-      if (!blocksWithPowertag || blocksWithPowertag.length == 0) {
-        await logseq.UI.showMsg(`No blocks with PowerTag: ${index} found`)
-        logseq.hideMainUI()
-        return
-      }
-
-      blocksWithPowertag.forEach(async (block) => {
+      await updateBlocks(index, async (block) => {
         const props = await logseq.Editor.getBlockProperties(block.uuid)
-        const propKeyArr = Object.keys(props)
-        if (!propKeyArr || propKeyArr.length == 0) return
-        propKeyArr.forEach(
-          async (propKey) =>
-            await logseq.Editor.removeBlockProperty(block.uuid, propKey),
+        await Promise.all(
+          Object.keys(props).map((propKey) =>
+            logseq.Editor.removeBlockProperty(block.uuid, propKey),
+          ),
         )
         await logseq.UI.showMsg(
           `PowerTag ${index} deleted. Properties removed from ${block.uuid}`,
           'success',
         )
-
-        logseq.hideMainUI()
       })
     },
     [tags],
@@ -64,46 +53,40 @@ export const TagManagement = ({
       if (!index || !data[index]) return
       const tag = data[index]
 
-      const currSavedTags = logseq.settings!.savedTags
-      const properties = currSavedTags[index]
-      const hasProp = properties.some(
-        (property: PropertiesProps) => property.name == tag.newProp,
-      )
-      if (hasProp) {
-        await logseq.UI.showMsg(`${tag.newProp} already exists`, 'error')
-        return
-      }
-      currSavedTags[index].push({
-        name: tag.newProp,
-        value: tag.defaultValue,
+      updateSettings((currSavedTags) => {
+        const properties = currSavedTags[index]
+        if (!properties) return
+        if (
+          properties.some(
+            (property: PropertiesProps) => property.name === tag.newProp,
+          )
+        ) {
+          logseq.UI.showMsg(`${tag.newProp} already exists`, 'error')
+          return currSavedTags
+        }
+        return {
+          ...currSavedTags,
+          [index]: [
+            ...properties,
+            { name: tag.newProp, value: tag.defaultValue },
+          ],
+        }
       })
 
-      logseq.updateSettings({
-        savedTags: 'Need to add some arbitrary string first',
-      })
-      logseq.updateSettings({ savedTags: currSavedTags })
       reset()
 
-      const blocksWithPowertag = await logseq.DB.q(`[[${index}]]`)
-      if (!blocksWithPowertag || blocksWithPowertag.length == 0) {
-        await logseq.UI.showMsg(`No blocks with PowerTag: ${index} found`)
-        logseq.hideMainUI()
-        return
-      }
-
-      blocksWithPowertag.forEach(async (block) => {
+      await updateBlocks(index, async (block) => {
+        const propValue = await handleDynamicVariables(tag.defaultValue)
         await logseq.Editor.upsertBlockProperty(
           block.uuid,
           tag.newProp,
-          tag.defaultValue,
+          propValue,
         )
         await logseq.UI.showMsg(
           `New property added to ${index}. ${block.uuid} updated with new property`,
           'success',
         )
       })
-
-      logseq.hideMainUI()
     },
     [tags],
   )

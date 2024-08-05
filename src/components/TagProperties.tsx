@@ -14,8 +14,11 @@ import { IconMenuOrder, IconTrash } from '@tabler/icons-react'
 import { Dispatch, SetStateAction, useCallback } from 'react'
 
 import { Tag } from '../features'
-import { reorderProperties } from '../services/reorder-properties'
+import { updateBlocks } from '../services/core/update-blocks'
+import { updateSettings } from '../services/core/update-settings'
+import { reorderProperties } from '../services/re-ordering/reorder-properties'
 import { SortableItem } from './SortableItem'
+import { reorderBlockProperties } from '../services/re-ordering'
 
 export interface PropertiesProps {
   name: string
@@ -73,52 +76,15 @@ export const TagProperties = ({
           )
 
           // Save to settings
-          const currSavedTags = logseq.settings!.savedTags
-          currSavedTags[index] = newTags[tagIndex]
-          logseq.updateSettings({
-            savedTags: 'Need to add some arbitrary string first',
-          })
-          logseq.updateSettings({ savedTags: currSavedTags })
+          updateSettings((currSavedTags) => ({
+            ...currSavedTags,
+            [index]: newTags[tagIndex],
+          }))
           localProps = newTags[tagIndex]
 
           return newTags
         })
-
-        const newOrder = localProps!.map((prop: PropertiesProps) => prop.name)
-        const blocksWithPowertag = await logseq.DB.q(`[[${index}]]`)
-        if (!blocksWithPowertag || blocksWithPowertag.length == 0) {
-          await logseq.UI.showMsg(`No blocks with PowerTag: ${index} found`)
-          logseq.hideMainUI()
-          return
-        }
-
-        blocksWithPowertag.forEach(async (block) => {
-          const blockProps = await logseq.Editor.getBlockProperties(block.uuid)
-          const newOrderBlockProps = reorderProperties(blockProps, newOrder)
-          if (!newOrderBlockProps) return
-
-          // Remove all properties
-          Object.keys(blockProps).forEach(
-            async (propKey: string) =>
-              await logseq.Editor.removeBlockProperty(block.uuid, propKey),
-          )
-
-          // Reinsert in new order
-          Object.entries(newOrderBlockProps).forEach(async (propPair) => {
-            await logseq.Editor.upsertBlockProperty(
-              block.uuid,
-              propPair[0],
-              propPair[1],
-            )
-          })
-
-          await logseq.UI.showMsg(
-            `Properties rearranged for ${block.uuid}`,
-            'success',
-          )
-
-          logseq.hideMainUI()
-        })
+        reorderBlockProperties(index, localProps!)
       }
     },
     [tags],
@@ -126,33 +92,20 @@ export const TagProperties = ({
 
   const deleteProperty = useCallback(
     async (index: string, name: string) => {
-      const currSavedTags = logseq.settings!.savedTags
-      const properties = currSavedTags[index]
-      currSavedTags[index] = properties.filter(
-        (property: { name: string }) => property.name !== name,
-      )
+      updateSettings((currSavedTags) => ({
+        ...currSavedTags,
+        [index]: currSavedTags[index]?.filter(
+          (property: { name: string }) => property.name !== name,
+        ),
+      }))
 
-      logseq.updateSettings({
-        savedTags: 'Need to add some arbitrary string first',
-      })
-      logseq.updateSettings({ savedTags: currSavedTags })
-
-      const blocksWithPowertag = await logseq.DB.q(`[[${index}]]`)
-      if (!blocksWithPowertag || blocksWithPowertag.length == 0) {
-        await logseq.UI.showMsg(`No blocks with PowerTag: ${index} found`)
-        logseq.hideMainUI()
-        return
-      }
-
-      blocksWithPowertag.forEach(async (block) => {
+      await updateBlocks(index, async (block) => {
         await logseq.Editor.removeBlockProperty(block.uuid, name)
         await logseq.UI.showMsg(
           `Property ${name} deleted from #${index}. Block ${block.uuid} updated`,
           'success',
         )
       })
-
-      logseq.hideMainUI()
     },
     [tags],
   )
