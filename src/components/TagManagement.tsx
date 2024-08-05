@@ -51,17 +51,29 @@ export const TagManagement = ({
     async (data: FormData) => {
       const index = Object.keys(data)[0]
       if (!index || !data[index]) return
+      const tag = data[index]
 
       const currSavedTags = logseq.settings!.savedTags
       currSavedTags[index].push({
-        name: data[index].newProp,
-        value: data[index].defaultValue,
+        name: tag.newProp,
+        value: tag.defaultValue,
       })
 
       logseq.updateSettings({
         savedTags: 'Need to add some arbitrary string first',
       })
       logseq.updateSettings({ savedTags: currSavedTags })
+
+      const blocksWithPowertag = await logseq.DB.q(`[[${index}]]`)
+      if (!blocksWithPowertag || blocksWithPowertag.length == 0) return
+
+      blocksWithPowertag.forEach(async (block) => {
+        await logseq.Editor.upsertBlockProperty(
+          block.uuid,
+          tag.newProp,
+          tag.defaultValue,
+        )
+      })
 
       logseq.hideMainUI()
       await logseq.UI.showMsg(`New property added to ${index}`, 'success')
