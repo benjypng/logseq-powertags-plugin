@@ -4,7 +4,7 @@
 
 # Introduction
 
-Designate selected tags as power tags, and see them auto-create properties are you use them!
+Designate selected tags as power tags, and see them auto-create properties are you use them.
 
 ![](./screenshots/demo.gif)
 
@@ -12,27 +12,21 @@ Designate selected tags as power tags, and see them auto-create properties are y
 
 ## Creating Power Tags
 
-1. Create a power tag by first going to a block with a tag that you would like to convert to a power tag and using `/Create power tag`.
-2. Insert the necessary properties that you would want to associate with this power tag.
+1. Click on the plugin icon.
+2. Enter your PowerTag, followed by the properties to assign to the PowerTag. You may also assign a default value.
 3. Now the next time you use the tag, your properties will be auto-added.
 
 ## Managing Your Tags
 
-1. Click on the `#` icon on your plugin toolbar.
+1. Click on the plugin icon.
 2. You will see a list of your created power tags.
-3. You can then:
-   - Delete a power tag
-     - This will not affect **past** blocks created with the tag
-   - Delete a property of a power tag
-     - This will apply to **past** and **future** blocks created with the tag
-   - Add a property of a power tag
-     - This will apply to **past** and **future** blocks created with the tag
-   - Apply the properties of a power tag to blocks created before the power tag
-     - This will apply to **past** blocks created before the power tag
+3. Any actions performed here will affect past blocks created with the tag. For example,
+   - Deleting a PowerTag
+     - Removes all properties from blocks that have the tag, even those not created with this plugin.
+   - Deleting a property of a PowerTag
+     - Removes the property from blocks that have the tag, even those not created with this plugin.
 
-> 1st Important Note: Note that the last 3 functions are irreversible so please ensure that your graph is backed up and that you are sure before applying them.
-
-> 2nd Important Note: Power tags are stored in the plugin settings. If the plugin settings file (found in `.logseq`) is deleted, you will need to manually create your power tags again.
+> Important Note: Power tags are stored in the plugin settings. If the plugin settings file (found in `.logseq`) is deleted, you will need to manually create your power tags again.
 
 # Installation
 
