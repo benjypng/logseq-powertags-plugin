@@ -14,7 +14,7 @@ This only applies to tags created using `#` and does not apply to page reference
 
 1. Click on the plugin icon.
 2. Enter your PowerTag, followed by the properties to assign to the PowerTag. You may also assign a default value.
-3. You may use *dynamic variables* in your default values. This will then be automatically populated when using your PowerTag. You may refer to the [Dynamic Variables]() section for available variables.
+3. You may use *dynamic variables* in your default values. This will then be automatically populated when using your PowerTag. You may refer to the [Dynamic Variables](https://github.com/benjypng/logseq-powertags-plugin?tab=readme-ov-file#dynamic-variables) section for available variables.
 4. Now the next time you use the tag, your properties will be auto-added.
 
 ## Managing Your Tags
@@ -44,6 +44,8 @@ By default, PowerTags are automatically parse when you presss `Enter` to create 
 If you turn off auto-parse, you may trigger the parsing manually by using the slash command at the end of your block with the PowerTag, i.e. `/Parse PowerTag`
 
 # Dynamic Variables
+
+![](/screenshots/dynamic-variables.gif)
 
 The following are available to use in your default values:
 
