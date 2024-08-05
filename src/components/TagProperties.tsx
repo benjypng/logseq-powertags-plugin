@@ -86,7 +86,11 @@ export const TagProperties = ({
 
         const newOrder = localProps!.map((prop: PropertiesProps) => prop.name)
         const blocksWithPowertag = await logseq.DB.q(`[[${index}]]`)
-        if (!blocksWithPowertag || blocksWithPowertag.length == 0) return
+        if (!blocksWithPowertag || blocksWithPowertag.length == 0) {
+          await logseq.UI.showMsg(`No blocks with PowerTag: ${index} found`)
+          logseq.hideMainUI()
+          return
+        }
 
         blocksWithPowertag.forEach(async (block) => {
           const blockProps = await logseq.Editor.getBlockProperties(block.uuid)
@@ -134,7 +138,12 @@ export const TagProperties = ({
       logseq.updateSettings({ savedTags: currSavedTags })
 
       const blocksWithPowertag = await logseq.DB.q(`[[${index}]]`)
-      if (!blocksWithPowertag || blocksWithPowertag.length == 0) return
+      if (!blocksWithPowertag || blocksWithPowertag.length == 0) {
+        await logseq.UI.showMsg(`No blocks with PowerTag: ${index} found`)
+        logseq.hideMainUI()
+        return
+      }
+
       blocksWithPowertag.forEach(async (block) => {
         await logseq.Editor.removeBlockProperty(block.uuid, name)
         await logseq.UI.showMsg(

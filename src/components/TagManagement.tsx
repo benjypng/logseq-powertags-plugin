@@ -33,7 +33,12 @@ export const TagManagement = ({
       logseq.updateSettings({ savedTags: currSavedTags })
 
       const blocksWithPowertag = await logseq.DB.q(`[[${index}]]`)
-      if (!blocksWithPowertag || blocksWithPowertag.length == 0) return
+      if (!blocksWithPowertag || blocksWithPowertag.length == 0) {
+        await logseq.UI.showMsg(`No blocks with PowerTag: ${index} found`)
+        logseq.hideMainUI()
+        return
+      }
+
       blocksWithPowertag.forEach(async (block) => {
         const props = await logseq.Editor.getBlockProperties(block.uuid)
         const propKeyArr = Object.keys(props)
@@ -80,7 +85,11 @@ export const TagManagement = ({
       reset()
 
       const blocksWithPowertag = await logseq.DB.q(`[[${index}]]`)
-      if (!blocksWithPowertag || blocksWithPowertag.length == 0) return
+      if (!blocksWithPowertag || blocksWithPowertag.length == 0) {
+        await logseq.UI.showMsg(`No blocks with PowerTag: ${index} found`)
+        logseq.hideMainUI()
+        return
+      }
 
       blocksWithPowertag.forEach(async (block) => {
         await logseq.Editor.upsertBlockProperty(
