@@ -30,6 +30,9 @@ export const observerCallback = async (mutationsList: any[]) => {
           property.name,
         )
         if (currProperty) continue
+
+        // TODO: Handle dynamic variables
+
         await logseq.Editor.upsertBlockProperty(
           uuid,
           property.name,
