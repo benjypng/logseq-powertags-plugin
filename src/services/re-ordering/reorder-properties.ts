@@ -1,4 +1,4 @@
-interface GenericProperty {
+export interface GenericProperty {
   [key: string]: any
 }
 
