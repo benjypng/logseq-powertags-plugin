@@ -14,12 +14,18 @@ import { IconMenuOrder, IconTrash } from '@tabler/icons-react'
 import { Dispatch, SetStateAction, useCallback } from 'react'
 
 import { Tag } from '../features'
+import { reorderProperties } from '../services/reorder-properties'
 import { SortableItem } from './SortableItem'
+
+interface PropertiesProps {
+  name: string
+  value: string
+}
 
 interface TagPropertiesProps {
   setLocalTags: Dispatch<SetStateAction<Tag>>
   index: string
-  properties: { name: string; value: string }[]
+  properties: PropertiesProps[]
   tags: Tag
 }
 
@@ -37,47 +43,78 @@ export const TagProperties = ({
     }),
   )
 
-  const handleDragEnd = useCallback(async (event: DragEndEvent) => {
-    const { active, over } = event
+  const handleDragEnd = useCallback(
+    async (event: DragEndEvent) => {
+      let localProps
+      const { active, over } = event
 
-    if (active.id !== over?.id) {
-      setLocalTags((prevTags) => {
-        if (!prevTags) return prevTags
+      if (active.id !== over?.id) {
+        setLocalTags((prevTags) => {
+          if (!prevTags) return prevTags
 
-        const newTags = { ...prevTags }
-        const tagIndex = Object.keys(prevTags).find((key) =>
-          prevTags[key]!.some((prop) => prop.name === active.id),
-        )
+          const newTags = { ...prevTags }
+          const tagIndex = Object.keys(prevTags).find((key) =>
+            prevTags[key]!.some((prop) => prop.name === active.id),
+          )
 
-        if (!tagIndex) return prevTags
+          if (!tagIndex) return prevTags
 
-        const activeIndex = prevTags[tagIndex]!.findIndex(
-          (prop) => prop.name === active.id,
-        )
-        const overIndex = prevTags[tagIndex]!.findIndex(
-          (prop) => prop.name === over?.id,
-        )
+          const activeIndex = prevTags[tagIndex]!.findIndex(
+            (prop) => prop.name === active.id,
+          )
+          const overIndex = prevTags[tagIndex]!.findIndex(
+            (prop) => prop.name === over?.id,
+          )
+          if (activeIndex === -1 || overIndex === -1) return prevTags
+          newTags[tagIndex] = arrayMove(
+            prevTags[tagIndex]!,
+            activeIndex,
+            overIndex,
+          )
 
-        if (activeIndex === -1 || overIndex === -1) return prevTags
+          // Save to settings
+          const currSavedTags = logseq.settings!.savedTags
+          currSavedTags[index] = newTags[tagIndex]
+          logseq.updateSettings({
+            savedTags: 'Need to add some arbitrary string first',
+          })
+          logseq.updateSettings({ savedTags: currSavedTags })
+          localProps = newTags[tagIndex]
 
-        newTags[tagIndex] = arrayMove(
-          prevTags[tagIndex]!,
-          activeIndex,
-          overIndex,
-        )
-
-        const currSavedTags = logseq.settings!.savedTags
-        currSavedTags[index] = newTags[tagIndex]
-
-        logseq.updateSettings({
-          savedTags: 'Need to add some arbitrary string first',
+          return newTags
         })
-        logseq.updateSettings({ savedTags: currSavedTags })
 
-        return newTags
-      })
-    }
-  }, [])
+        const newOrder = localProps!.map((prop: PropertiesProps) => prop.name)
+        const blocksWithPowertag = await logseq.DB.q(`[[${index}]]`)
+        if (!blocksWithPowertag || blocksWithPowertag.length == 0) return
+
+        blocksWithPowertag.forEach(async (block) => {
+          const blockProps = await logseq.Editor.getBlockProperties(block.uuid)
+          const newOrderBlockProps = reorderProperties(blockProps, newOrder)
+          if (!newOrderBlockProps) return
+
+          // Remove all properties
+          Object.keys(blockProps).forEach(
+            async (propKey: string) =>
+              await logseq.Editor.removeBlockProperty(block.uuid, propKey),
+          )
+
+          // Reinsert in new order
+          Object.entries(newOrderBlockProps).forEach(async (propPair) => {
+            await logseq.Editor.upsertBlockProperty(
+              block.uuid,
+              propPair[0],
+              propPair[1],
+            )
+          })
+
+          logseq.hideMainUI()
+          await logseq.UI.showMsg('Properties rearranged', 'success')
+        })
+      }
+    },
+    [tags],
+  )
 
   const deleteProperty = useCallback(
     async (index: string, name: string) => {

@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client'
 
 import PowerTags from './features'
 import { handlePopup } from './handle-popup'
-import { observerCallback } from './services/observerCallback'
+import { observerCallback } from './observerCallback'
 import settings from './settings'
 
 const main = () => {
