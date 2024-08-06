@@ -12,6 +12,11 @@ const main = () => {
   console.log('logseq-powertags-plugin loaded')
   handlePopup()
 
+  // Create a savedTags object in settings if it doesn't exist
+  if (!logseq.settings!.savedTags) {
+    logseq.updateSettings({ savedTags: {} })
+  }
+
   const el = document.getElementById('app')
   if (!el) return
   const root = createRoot(el)

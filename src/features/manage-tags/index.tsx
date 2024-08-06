@@ -10,7 +10,7 @@ export const ManageTags = ({ tags }: { tags: Tag }) => {
     setLocalTags(tags)
   }, [tags])
 
-  if (!localTags) return <h2>Loading...</h2>
+  if (!localTags) return <h2>Error in plugin settings...</h2>
 
   return (
     <div id="section-manage-powertags">
