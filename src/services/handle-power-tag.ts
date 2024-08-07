@@ -10,7 +10,7 @@ export const handlePowerTag = async (uuid: string) => {
   const tag = tagMatch[1] ?? tagMatch[2]
   if (!tag) return
 
-  const powerTag = logseq.settings!.savedTags[tag]
+  const powerTag = logseq.settings!.savedTags[tag.toLowerCase()]
   if (!powerTag) return
 
   //****RULES OF ENGAGEMENT****//

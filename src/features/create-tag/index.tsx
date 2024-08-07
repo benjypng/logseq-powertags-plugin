@@ -34,7 +34,7 @@ export const CreateTag = () => {
 
     logseq.updateSettings({
       savedTags: {
-        [data.tagName]: data.properties,
+        [data.tagName.toLowerCase()]: data.properties,
       },
     })
     reset()
