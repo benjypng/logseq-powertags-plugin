@@ -1,7 +1,14 @@
 import './index.css'
 import '@mantine/core/styles.css'
 
-import { CloseButton, Group, Flex, MantineProvider, Title } from '@mantine/core'
+import {
+  CloseButton,
+  Flex,
+  Group,
+  MantineProvider,
+  Space,
+  Title,
+} from '@mantine/core'
 import { useEffect, useState } from 'react'
 
 import { THEME } from '../constants'
@@ -34,11 +41,12 @@ const PowerTags = () => {
           direction="column"
           id="powertags-container"
         >
-          <Group justify="space-between">
-            <Title fz="md">PowerTags Menu</Title>
+          <Group justify="space-between" mb="md">
+            <Title fz="lg">PowerTags Menu</Title>
             <CloseButton size="md" onClick={closeModal} />
           </Group>
           <CreateTag />
+          <Space h="1rem" />
           <ManageTags tags={tags} />
         </Flex>
       </Flex>

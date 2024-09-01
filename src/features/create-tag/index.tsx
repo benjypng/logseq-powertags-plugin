@@ -1,4 +1,13 @@
-import { useFieldArray, useForm } from 'react-hook-form'
+import {
+  ActionIcon,
+  Button,
+  Flex,
+  Group,
+  Input,
+  Space,
+  Title,
+} from '@mantine/core'
+import { Controller, useFieldArray, useForm } from 'react-hook-form'
 
 interface PowerTag {
   tagName: string
@@ -43,42 +52,55 @@ export const CreateTag = () => {
   }
 
   return (
-    <div id="section-create-powertag">
-      <h2>Create</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="tag-input">
-          <div className="hashtag-input-wrapper">
-            <div className="hashtag">#</div>
-            <input
-              {...register('tagName', { required: true })}
-              placeholder="Tag Input"
+    <Flex direction="column" bg="white" p="md">
+      <Title fz="lg">Create</Title>
+      <Space h="1rem" />
+      <Flex direction="column" gap="md">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Group justify="space-between">
+            <Controller
+              control={control}
+              name="tagName"
+              rules={{ required: 'Tag required' }}
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  placeholder="Enter tag"
+                  leftSection={'#'}
+                  w="22rem"
+                />
+              )}
             />
-          </div>
-          <button type="button" onClick={() => append({ name: '', value: '' })}>
-            Add Property
-          </button>
-        </div>
-        {fields.map((field, index) => (
-          <div key={field.id} className="property-input">
-            <input
-              {...register(`properties.${index}.name`, {
-                required: true,
-              })}
-              placeholder="Property"
-            />
-            <input
-              {...register(`properties.${index}.value`)}
-              placeholder="Default value"
-            />
-            {watch('properties').length > 1 && (
-              <button type="button" onClick={() => remove(index)}>
-                -
-              </button>
-            )}
-          </div>
-        ))}
-        <button type="submit">Create Tag</button>
-      </form>
-    </div>
+            <Button
+              type="button"
+              onClick={() => append({ name: '', value: '' })}
+            >
+              Add Property
+            </Button>
+          </Group>
+
+          {fields.map((field, index) => (
+            <Flex key={field.id}>
+              <input
+                {...register(`properties.${index}.name`, {
+                  required: true,
+                })}
+                placeholder="Property"
+              />
+              <input
+                {...register(`properties.${index}.value`)}
+                placeholder="Default value"
+              />
+              {watch('properties').length > 1 && (
+                <ActionIcon type="button" onClick={() => remove(index)}>
+                  -
+                </ActionIcon>
+              )}
+            </Flex>
+          ))}
+          <Button type="submit">Create Tag</Button>
+        </form>
+      </Flex>
+    </Flex>
   )
 }

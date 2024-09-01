@@ -120,7 +120,12 @@ export const TagProperties = ({
           {properties.map(({ name }) => (
             <SortableItem key={name} id={name} index={index}>
               {(attributes, listeners) => (
-                <Flex justify="space-between">
+                <Flex
+                  justify="space-between"
+                  bg="#eee"
+                  p="xs"
+                  style={{ borderRadius: '0.4rem' }}
+                >
                   <Flex
                     direction="row"
                     {...attributes}
@@ -132,7 +137,11 @@ export const TagProperties = ({
                     <Text style={{ cursor: 'pointer' }}>{name}</Text>
                   </Flex>
                   {properties.length > 1 && (
-                    <ActionIcon onClick={() => deleteProperty(index, name)}>
+                    <ActionIcon
+                      onClick={() => deleteProperty(index, name)}
+                      variant="outline"
+                      color="red"
+                    >
                       <Trash size="1rem" />
                     </ActionIcon>
                   )}
