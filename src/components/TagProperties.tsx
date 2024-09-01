@@ -10,15 +10,15 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
-import { IconMenuOrder, IconTrash } from '@tabler/icons-react'
+import { ActionIcon, Flex, Stack, Text } from '@mantine/core'
+import { ArrowDownUp, Trash } from 'lucide-react'
 import { Dispatch, SetStateAction, useCallback } from 'react'
 
 import { Tag } from '../features'
 import { updateBlocks } from '../services/core/update-blocks'
 import { updateSettings } from '../services/core/update-settings'
-import { reorderProperties } from '../services/re-ordering/reorder-properties'
-import { SortableItem } from './SortableItem'
 import { reorderBlockProperties } from '../services/re-ordering'
+import { SortableItem } from './SortableItem'
 
 export interface PropertiesProps {
   name: string
@@ -116,23 +116,31 @@ export const TagProperties = ({
         items={properties.map((prop) => prop.name)}
         strategy={verticalListSortingStrategy}
       >
-        {properties.map(({ name }) => (
-          <SortableItem key={name} id={name} index={index}>
-            {(attributes, listeners) => (
-              <div className="sortable-property">
-                <div className="icon-group" {...attributes} {...listeners}>
-                  <IconMenuOrder stroke={2} size="1rem" />
-                  <p>{name}</p>
-                </div>
-                {properties.length > 1 && (
-                  <button onClick={() => deleteProperty(index, name)}>
-                    <IconTrash stroke={1} size="1rem" />
-                  </button>
-                )}
-              </div>
-            )}
-          </SortableItem>
-        ))}
+        <Stack gap="sm">
+          {properties.map(({ name }) => (
+            <SortableItem key={name} id={name} index={index}>
+              {(attributes, listeners) => (
+                <Flex justify="space-between">
+                  <Flex
+                    direction="row"
+                    {...attributes}
+                    {...listeners}
+                    gap="xs"
+                    align="center"
+                  >
+                    <ArrowDownUp size="1rem" style={{ cursor: 'pointer' }} />
+                    <Text style={{ cursor: 'pointer' }}>{name}</Text>
+                  </Flex>
+                  {properties.length > 1 && (
+                    <ActionIcon onClick={() => deleteProperty(index, name)}>
+                      <Trash size="1rem" />
+                    </ActionIcon>
+                  )}
+                </Flex>
+              )}
+            </SortableItem>
+          ))}
+        </Stack>
       </SortableContext>
     </DndContext>
   )

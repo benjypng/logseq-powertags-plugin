@@ -1,5 +1,6 @@
+import { Button, Card, Group, Input, Paper, Space, Title } from '@mantine/core'
 import { useCallback } from 'react'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 
 import { updateBlocks } from '../services/core/update-blocks'
 import { updateSettings } from '../services/core/update-settings'
@@ -23,7 +24,7 @@ export const TagManagement = ({
   properties,
   tags,
 }: TagPropertiesProps) => {
-  const { register, handleSubmit, reset } = useForm()
+  const { control, handleSubmit, reset } = useForm<FormData>()
 
   const deletePowertag = useCallback(
     async (index: string) => {
@@ -92,28 +93,44 @@ export const TagManagement = ({
   )
 
   return (
-    <div key={index} className="tag-management">
-      <div className="tag-management-header">
-        <h3>{index}</h3>
-        <button onClick={() => deletePowertag(index)}>Delete PowerTag</button>
-      </div>
+    <Paper shadow="sm" radius="md" px="lg" pb="lg" withBorder>
+      <Group justify="space-between" mt="md" mb="xs">
+        <Title fz="md">{index}</Title>
+        <Button color="red" onClick={() => deletePowertag(index)}>
+          Delete PowerTag
+        </Button>
+      </Group>
+      <Space h="1rem" />
       <TagProperties
         setLocalTags={setLocalTags}
         index={index}
         properties={properties}
         tags={tags}
       />
+      <Space h="1rem" />
       <form onSubmit={handleSubmit(addNewProp)}>
-        <input
-          {...register(`${index}.newProp`, { required: true })}
-          placeholder="Add new property"
-        />
-        <input
-          {...register(`${index}.defaultValue`)}
-          placeholder="Default value"
-        />
-        <button type="submit">Add New Property</button>
+        <Group justify="space-between" gap="0.5rem">
+          <Controller
+            name={`${index}.newProp`}
+            control={control}
+            rules={{ required: 'Required' }}
+            render={({ field }) => (
+              <Input {...field} placeholder="New property" w="10rem" />
+            )}
+          />
+          <Controller
+            name={`${index}.defaultValue`}
+            control={control}
+            rules={{ required: 'Required' }}
+            render={({ field }) => (
+              <Input {...field} placeholder="Default value" />
+            )}
+          />
+          <Button type="submit" size="sm" variant="outline" w="10rem">
+            Add New Property
+          </Button>
+        </Group>
       </form>
-    </div>
+    </Paper>
   )
 }

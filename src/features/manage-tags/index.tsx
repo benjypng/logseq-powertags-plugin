@@ -1,3 +1,4 @@
+import { Flex, Space, Text, Title } from '@mantine/core'
 import { useEffect, useState } from 'react'
 
 import { TagManagement } from '../../components/TagManagement'
@@ -13,21 +14,24 @@ export const ManageTags = ({ tags }: { tags: Tag }) => {
   if (!localTags) return <h2>Error in plugin settings...</h2>
 
   return (
-    <div id="section-manage-powertags">
-      <h2>Manage</h2>
-      <p>
+    <Flex direction="column" bg="white" p="md">
+      <Title fz="lg">Manage</Title>
+      <Text fz="sm">
         Deleting a PowerTag or property will affect all blocks that reference
         this PowerTag, even if they were not created with this plugin.
-      </p>
-      {Object.entries(localTags).map(([index, properties]) => (
-        <TagManagement
-          key={index}
-          index={index}
-          setLocalTags={setLocalTags}
-          properties={properties}
-          tags={tags}
-        />
-      ))}
-    </div>
+      </Text>
+      <Space h="1rem" />
+      <Flex gap="md" direction="column">
+        {Object.entries(localTags).map(([index, properties]) => (
+          <TagManagement
+            key={index}
+            index={index}
+            setLocalTags={setLocalTags}
+            properties={properties}
+            tags={tags}
+          />
+        ))}
+      </Flex>
+    </Flex>
   )
 }
