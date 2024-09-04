@@ -95,7 +95,7 @@ export const TagManagement = ({
   return (
     <Paper shadow="sm" radius="md" px="lg" pb="lg" withBorder>
       <Group justify="space-between" mt="md" mb="xs">
-        <Title fz="md">{index}</Title>
+        <Title fz="md">#{index}</Title>
         <Button color="red" onClick={() => deletePowertag(index)}>
           Delete PowerTag
         </Button>
