@@ -1,8 +1,17 @@
 import './index.css'
+import '@mantine/core/styles.css'
 
-import { IconX } from '@tabler/icons-react'
+import {
+  CloseButton,
+  Flex,
+  Group,
+  MantineProvider,
+  Space,
+  Title,
+} from '@mantine/core'
 import { useEffect, useState } from 'react'
 
+import { THEME } from '../constants'
 import { CreateTag } from './create-tag'
 import { ManageTags } from './manage-tags'
 
@@ -22,16 +31,27 @@ const PowerTags = () => {
   }
 
   return (
-    <div id="powertags-container">
-      <div id="powertags-header">
-        <h1>PowerTags Menu</h1>
-        <button type="button" onClick={closeModal}>
-          <IconX stroke={2} />
-        </button>
-      </div>
-      <CreateTag />
-      <ManageTags tags={tags} />
-    </div>
+    <MantineProvider theme={THEME}>
+      <Flex bg="none" justify="right" p="md">
+        <Flex
+          p="md"
+          mt="xl"
+          bg="#eee"
+          w="40rem"
+          direction="column"
+          id="powertags-container"
+          style={{ borderRadius: '0.5rem' }}
+        >
+          <Group justify="space-between" mb="md">
+            <Title fz="lg">PowerTags Menu</Title>
+            <CloseButton size="md" onClick={closeModal} />
+          </Group>
+          <CreateTag />
+          <Space h="1rem" />
+          <ManageTags tags={tags} />
+        </Flex>
+      </Flex>
+    </MantineProvider>
   )
 }
 

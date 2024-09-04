@@ -1,4 +1,14 @@
-import { useFieldArray, useForm } from 'react-hook-form'
+import {
+  ActionIcon,
+  Button,
+  Flex,
+  Group,
+  Input,
+  Space,
+  Title,
+} from '@mantine/core'
+import { useCallback } from 'react'
+import { Controller, useFieldArray, useForm } from 'react-hook-form'
 
 interface PowerTag {
   tagName: string
@@ -9,7 +19,7 @@ interface PowerTag {
 }
 
 export const CreateTag = () => {
-  const { register, control, handleSubmit, watch, reset } = useForm<PowerTag>({
+  const { control, handleSubmit, watch, reset } = useForm<PowerTag>({
     defaultValues: {
       tagName: '',
       properties: [{ name: '', value: '' }],
@@ -24,7 +34,7 @@ export const CreateTag = () => {
     },
   })
 
-  const onSubmit = async (data: PowerTag) => {
+  const onSubmit = useCallback(async (data: PowerTag) => {
     // Check if tag already exists
     const currSavedTags = logseq.settings!.savedTags
     if (currSavedTags[data.tagName]) {
@@ -40,45 +50,77 @@ export const CreateTag = () => {
     reset()
     logseq.hideMainUI()
     await logseq.UI.showMsg('PowerTag saved!', 'success')
-  }
+  }, [])
 
   return (
-    <div id="section-create-powertag">
-      <h2>Create</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="tag-input">
-          <div className="hashtag-input-wrapper">
-            <div className="hashtag">#</div>
-            <input
-              {...register('tagName', { required: true })}
-              placeholder="Tag Input"
+    <Flex direction="column" bg="white" p="md">
+      <Title fz="lg">Create</Title>
+      <Space h="1rem" />
+      <Flex direction="column" gap="md">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Group justify="space-between">
+            <Controller
+              control={control}
+              name="tagName"
+              rules={{ required: 'Tag required' }}
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  placeholder="Enter tag"
+                  leftSection="#"
+                  w="22rem"
+                />
+              )}
             />
-          </div>
-          <button type="button" onClick={() => append({ name: '', value: '' })}>
-            Add Property
-          </button>
-        </div>
-        {fields.map((field, index) => (
-          <div key={field.id} className="property-input">
-            <input
-              {...register(`properties.${index}.name`, {
-                required: true,
-              })}
-              placeholder="Property"
-            />
-            <input
-              {...register(`properties.${index}.value`)}
-              placeholder="Default value"
-            />
-            {watch('properties').length > 1 && (
-              <button type="button" onClick={() => remove(index)}>
-                -
-              </button>
-            )}
-          </div>
-        ))}
-        <button type="submit">Create Tag</button>
-      </form>
-    </div>
+          </Group>
+
+          <Space h="0.5rem" />
+
+          {fields.map((field, index) => (
+            <Group key={field.id} mb="xs" gap="0.2rem">
+              <Controller
+                control={control}
+                name={`properties.${index}.name`}
+                rules={{ required: 'Property required' }}
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    placeholder="Enter property"
+                    rightSection="::"
+                  />
+                )}
+              />
+              <Controller
+                control={control}
+                name={`properties.${index}.value`}
+                render={({ field }) => (
+                  <Input {...field} placeholder="Enter value" />
+                )}
+              />
+              <ActionIcon
+                type="button"
+                size="lg"
+                onClick={() => append({ name: '', value: '' })}
+              >
+                +
+              </ActionIcon>
+              {watch('properties').length > 1 && (
+                <ActionIcon
+                  type="button"
+                  size="lg"
+                  onClick={() => remove(index)}
+                >
+                  -
+                </ActionIcon>
+              )}
+            </Group>
+          ))}
+
+          <Space h="1rem" />
+
+          <Button type="submit">Create Tag</Button>
+        </form>
+      </Flex>
+    </Flex>
   )
 }
