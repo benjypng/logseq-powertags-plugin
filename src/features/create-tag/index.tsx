@@ -72,12 +72,6 @@ export const CreateTag = () => {
                 />
               )}
             />
-            <Button
-              type="button"
-              onClick={() => append({ name: '', value: '' })}
-            >
-              Add PropertremoveIndexy
-            </Button>
           </Group>
 
           <Space h="0.5rem" />
@@ -103,8 +97,19 @@ export const CreateTag = () => {
                   <Input {...field} placeholder="Enter value" />
                 )}
               />
+              <ActionIcon
+                type="button"
+                size="lg"
+                onClick={() => append({ name: '', value: '' })}
+              >
+                +
+              </ActionIcon>
               {watch('properties').length > 1 && (
-                <ActionIcon type="button" onClick={() => remove(index)}>
+                <ActionIcon
+                  type="button"
+                  size="lg"
+                  onClick={() => remove(index)}
+                >
                   -
                 </ActionIcon>
               )}
