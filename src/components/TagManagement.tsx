@@ -1,4 +1,4 @@
-import { Button, Card, Group, Input, Paper, Space, Title } from '@mantine/core'
+import { Button, Group, Input, Paper, Space, Title } from '@mantine/core'
 import { useCallback } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
