@@ -7,6 +7,7 @@ import {
   Space,
   Title,
 } from '@mantine/core'
+import { useCallback } from 'react'
 import { Controller, useFieldArray, useForm } from 'react-hook-form'
 
 interface PowerTag {
@@ -18,7 +19,7 @@ interface PowerTag {
 }
 
 export const CreateTag = () => {
-  const { register, control, handleSubmit, watch, reset } = useForm<PowerTag>({
+  const { control, handleSubmit, watch, reset } = useForm<PowerTag>({
     defaultValues: {
       tagName: '',
       properties: [{ name: '', value: '' }],
@@ -33,7 +34,7 @@ export const CreateTag = () => {
     },
   })
 
-  const onSubmit = async (data: PowerTag) => {
+  const onSubmit = useCallback(async (data: PowerTag) => {
     // Check if tag already exists
     const currSavedTags = logseq.settings!.savedTags
     if (currSavedTags[data.tagName]) {
@@ -49,7 +50,7 @@ export const CreateTag = () => {
     reset()
     logseq.hideMainUI()
     await logseq.UI.showMsg('PowerTag saved!', 'success')
-  }
+  }, [])
 
   return (
     <Flex direction="column" bg="white" p="md">
@@ -66,7 +67,7 @@ export const CreateTag = () => {
                 <Input
                   {...field}
                   placeholder="Enter tag"
-                  leftSection={'#'}
+                  leftSection="#"
                   w="22rem"
                 />
               )}
@@ -75,29 +76,43 @@ export const CreateTag = () => {
               type="button"
               onClick={() => append({ name: '', value: '' })}
             >
-              Add Property
+              Add PropertremoveIndexy
             </Button>
           </Group>
 
+          <Space h="0.5rem" />
+
           {fields.map((field, index) => (
-            <Flex key={field.id}>
-              <input
-                {...register(`properties.${index}.name`, {
-                  required: true,
-                })}
-                placeholder="Property"
+            <Group key={field.id} mb="xs" gap="0.2rem">
+              <Controller
+                control={control}
+                name={`properties.${index}.name`}
+                rules={{ required: 'Property required' }}
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    placeholder="Enter property"
+                    rightSection="::"
+                  />
+                )}
               />
-              <input
-                {...register(`properties.${index}.value`)}
-                placeholder="Default value"
+              <Controller
+                control={control}
+                name={`properties.${index}.value`}
+                render={({ field }) => (
+                  <Input {...field} placeholder="Enter value" />
+                )}
               />
               {watch('properties').length > 1 && (
                 <ActionIcon type="button" onClick={() => remove(index)}>
                   -
                 </ActionIcon>
               )}
-            </Flex>
+            </Group>
           ))}
+
+          <Space h="1rem" />
+
           <Button type="submit">Create Tag</Button>
         </form>
       </Flex>
