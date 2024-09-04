@@ -40,6 +40,7 @@ const PowerTags = () => {
           w="40rem"
           direction="column"
           id="powertags-container"
+          style={{ borderRadius: '0.5rem' }}
         >
           <Group justify="space-between" mb="md">
             <Title fz="lg">PowerTags Menu</Title>

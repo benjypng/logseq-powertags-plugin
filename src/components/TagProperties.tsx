@@ -117,7 +117,7 @@ export const TagProperties = ({
         strategy={verticalListSortingStrategy}
       >
         <Stack gap="sm">
-          {properties.map(({ name }) => (
+          {properties.map(({ name, value }) => (
             <SortableItem key={name} id={name} index={index}>
               {(attributes, listeners) => (
                 <Flex
@@ -134,7 +134,9 @@ export const TagProperties = ({
                     align="center"
                   >
                     <ArrowDownUp size="1rem" style={{ cursor: 'pointer' }} />
-                    <Text style={{ cursor: 'pointer' }}>{name}</Text>
+                    <Text style={{ cursor: 'pointer' }} fz="sm">
+                      {name}:: {value}
+                    </Text>
                   </Flex>
                   {properties.length > 1 && (
                     <ActionIcon
