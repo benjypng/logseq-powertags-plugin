@@ -1,5 +1,7 @@
 [:gift_heart: Sponsor this project on Github](https://github.com/sponsors/hkgnp) or [:coffee: Get me a coffee](https://www.buymeacoffee.com/hkgnp.dev) if you like this plugin!
 
+> Given the launch of Logseq DB, I am archiving this plugin as it is no longer required.
+
 # Introduction
 
 Designate selected hashtags as PowerTags, and see them auto-create properties are you use them. 
