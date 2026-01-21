@@ -3,7 +3,7 @@ import { handleDynamicVariables } from './handle-dynamic-variables'
 export const handlePowerTag = async (uuid: string) => {
   const blk = await logseq.Editor.getBlock(uuid)
   if (!blk) return
-  const tagMatch = /#(?:\[\[(.*?)\]\]|(\w+))/.exec(blk.content)
+  const tagMatch = /#(?:\[\[(.*?)\]\]|(.+))/.exec(blk.content)
   if (!tagMatch) return
 
   // Check whether tag is a PowerTag
